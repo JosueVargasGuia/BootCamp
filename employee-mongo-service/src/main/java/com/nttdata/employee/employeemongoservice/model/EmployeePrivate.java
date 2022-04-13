@@ -1,5 +1,7 @@
 package com.nttdata.employee.employeemongoservice.model;
 
+import javax.annotation.Generated;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,6 +17,7 @@ import lombok.Setter;
 @Document(collection = "employee_private")
 public class EmployeePrivate {
 	@Id
+ 
 	private Long idEmployee;
 	private String name;
 }
