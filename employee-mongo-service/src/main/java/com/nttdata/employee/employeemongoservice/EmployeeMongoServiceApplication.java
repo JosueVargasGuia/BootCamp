@@ -1,13 +1,13 @@
-package com.nttdata.employee.bankservice;
+package com.nttdata.employee.employeemongoservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-/*https://www.youtube.com/watch?v=OtBukxJy4kg*/
+
 @SpringBootApplication
-public class BankServiceApplication {
+public class EmployeeMongoServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BankServiceApplication.class, args);
+		SpringApplication.run(EmployeeMongoServiceApplication.class, args);
 	}
 
 }
