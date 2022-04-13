@@ -1,7 +1,6 @@
 package com.nttdata.employee.employeeservice.model;
- 
 
- 
+import javax.annotation.processing.Generated;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,9 +18,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "employee")
- //@Document(collection = "employees")
 public class Employee {
-	@Id	 
+	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idEmployee;
 	private String firtsName;
