@@ -1,6 +1,5 @@
 package com.example.crud.controllers;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -12,12 +11,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.crud.models.ProductDTO;
 import com.example.crud.repositories.IProductDAO;
 import com.example.crud.services.ProductService;
-
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("api/products")
@@ -27,11 +25,11 @@ public class ProductController {
 	private ProductService service;
 	
 	
-	/*@PostMapping("/save")
-	public ProductDTO saveProduct(@Validated @RequestBody ProductDTO dto) {
+	@PostMapping("/save")
+	public Mono<ProductDTO> saveProduct(@Validated @RequestBody ProductDTO dto) {
 		
-		return repository.save(dto);
-	}*/
+		return service.addProduct(dto);
+	}
 	
 	
 	@GetMapping("/list")
@@ -39,5 +37,10 @@ public class ProductController {
 		return service.findAll();
 	}
 	
+	
+	@GetMapping("/listOne/{id}")
+	public Mono<ProductDTO> findOneProduct(@PathVariable("id") String id){
+		return service.findOneProduct(id);
+	}
 	
 }
