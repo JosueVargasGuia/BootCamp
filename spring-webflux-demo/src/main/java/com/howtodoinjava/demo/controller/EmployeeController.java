@@ -34,7 +34,7 @@ public class EmployeeController {
     @ResponseBody
     public ResponseEntity<Mono<Employee>> findById(@PathVariable("id") Integer id) {
         Mono<Employee> e = employeeService.findById(id);
-        HttpStatus status = e != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+        HttpStatus status = (e != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
         return new ResponseEntity<Mono<Employee>>(e, status);
     }
  
