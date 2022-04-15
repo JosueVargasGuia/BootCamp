@@ -39,6 +39,7 @@ public class MovementAccountServiceImpl implements MovementAccountService{
 				.flatMap(currentMovement -> {
 					movementAccount.setAmount(currentMovement.getAmount());
 					movementAccount.setDate(currentMovement.getDate());
+					movementAccount.setTypeMovement(currentMovement.getTypeMovement());
 					return repository.save(movementAccount);
 				})
 				.map(updatedMovement -> ResponseEntity.ok(updatedMovement))

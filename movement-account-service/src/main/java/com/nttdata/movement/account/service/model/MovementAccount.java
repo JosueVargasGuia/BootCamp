@@ -21,5 +21,6 @@ public class MovementAccount {
 	private String id;
 	private LocalDate date;
 	private Double amount;
+	private String typeMovement;
 
 }
