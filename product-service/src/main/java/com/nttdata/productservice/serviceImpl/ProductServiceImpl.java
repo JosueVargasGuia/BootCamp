@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
  
 import com.nttdata.productservice.entity.Product;
 import com.nttdata.productservice.entity.TypeProduct;
@@ -33,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Mono<Product> findById(Long idProducto) {
 		return productRepository.findById(idProducto);
+				//.switchIfEmpty(Mono.just(new Product(null, null, null, null)));
 	}
 
 	@Override
@@ -42,10 +42,9 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Mono<Product> update(Product product) {
-		//Verificar logica si aplica la busqueda del flatMap
-		Mono<Product> mono = productRepository.findById(product.getIdConfiguration())
-				.flatMap(obProduct -> {
-					return productRepository.save(obProduct);
+		Mono<Product> mono = productRepository.findById(product.getIdProducto())
+				.flatMap(objproduct -> {
+					return productRepository.save(product);
 				});
 		return mono;
 		 
@@ -60,6 +59,7 @@ public class ProductServiceImpl implements ProductService {
 		return mono;
 		// return productRepository.deleteById(idProducto);
 	}
+	
 	Long idProducto=Long.valueOf(0);
 	@Override
 	public Mono<Void> fillData() {

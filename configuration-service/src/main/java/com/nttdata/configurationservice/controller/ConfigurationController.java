@@ -1,6 +1,10 @@
 package com.nttdata.configurationservice.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.server.ServerResponse;
 
 import com.nttdata.configurationservice.entity.Configuration;
 import com.nttdata.configurationservice.service.ConfigurationService;
@@ -19,6 +24,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/configuration")
 public class ConfigurationController {
+	Logger log = LoggerFactory.getLogger(ConfigurationController.class);
 	@Autowired
 	ConfigurationService configurationService;
 
@@ -28,26 +34,43 @@ public class ConfigurationController {
 	}
 
 	@PostMapping
-	public Mono<Configuration> save(@RequestBody Configuration configuration) {
-		return configurationService.save(configuration);
+	public Mono<ResponseEntity<Configuration>> save(@RequestBody Configuration configuration) {
+		return configurationService.save(configuration).map(_configuration -> ResponseEntity.ok().body(_configuration))
+				.onErrorResume(e -> {
+					log.info("Error:" + e.getMessage());
+					return Mono.just(ResponseEntity.badRequest().build());
+				});
 	}
 
 	@GetMapping("/{idConfiguration}")
-	public Mono<Configuration> findById(@PathVariable(name = "idConfiguration") long idConfiguration) {
-		return configurationService.findById(idConfiguration);
+	public Mono<ResponseEntity<Configuration>> findById(@PathVariable(name = "idConfiguration") long idConfiguration) {
+		return configurationService.findById(idConfiguration)
+				.map(configuration -> ResponseEntity.ok().body(configuration))
+				.onErrorResume(e -> {
+					log.info(e.getMessage());
+					return Mono.just(ResponseEntity.badRequest().build());
+				})
+				.defaultIfEmpty(ResponseEntity.noContent().build());
 	}
 
 	@PutMapping
-	public Mono<Configuration> update(@RequestBody Configuration configuration) {
-		return configurationService.update(configuration);
+	public Mono<ResponseEntity<Configuration>> update(@RequestBody Configuration configuration) {
+		return configurationService.update(configuration)
+				.map(_configuration -> ResponseEntity.ok().body(_configuration)).onErrorResume(e -> {
+					log.info(e.getMessage());
+					return Mono.just(ResponseEntity.badRequest().build());
+				})
+				.defaultIfEmpty(ResponseEntity.noContent().build());
 	}
 
 	@DeleteMapping("/{idConfiguration}")
-	public Mono<Void> delete(@PathVariable(name = "idConfiguration") long idConfiguration) {
-		return configurationService.delete(idConfiguration);
+	public Mono<ResponseEntity<Void>> delete(@PathVariable(name = "idConfiguration") long idConfiguration) {
+		return configurationService.delete(idConfiguration)
+				.then(Mono.just(ResponseEntity.ok().build()));
 	}
+
 	@GetMapping("/fillData")
-	public Mono<Void> fillData( ) {
+	public Mono<Void> fillData() {
 		return configurationService.fillData();
 	}
 }

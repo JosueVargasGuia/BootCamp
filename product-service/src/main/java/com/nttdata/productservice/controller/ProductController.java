@@ -1,5 +1,7 @@
 package com.nttdata.productservice.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/product")
 public class ProductController {
+	Logger log = LoggerFactory.getLogger(ProductController.class);
 	@Autowired
 	ProductService productService;
 
@@ -30,30 +33,47 @@ public class ProductController {
 	}
 
 	@PostMapping
-	public Mono<Product> save(@RequestBody Product product) {
-		return productService.save(product);
+	public Mono<ResponseEntity<Product>> save(@RequestBody Product product) {
+		return productService.save(product).map(_product -> ResponseEntity.ok().body(_product))
+				.onErrorResume(e -> {
+					log.info("Error:" + e.getMessage());
+					return Mono.just(ResponseEntity.badRequest().build());
+				});
 	}
 
 	@GetMapping("/{idProducto}")
-	public Mono<Product> findById(@PathVariable(name = "idProducto") long idProducto) {
-		return productService.findById(idProducto);
+	public Mono<ResponseEntity<Product>> findById(@PathVariable(name = "idProducto") long idProducto) {
+		return productService.findById(idProducto)
+				.map(product -> ResponseEntity.ok().body(product))
+				.onErrorResume(e -> {
+					log.info(e.getMessage());
+					return Mono.just(ResponseEntity.badRequest().build());
+				})
+				.defaultIfEmpty(ResponseEntity.noContent().build());
 	}
 
 	@PutMapping
-	public Mono<Product> update(@RequestBody Product product) {
-		return productService.update(product);
-	}
+	public Mono<ResponseEntity<Product>> update(@RequestBody Product product) {
+		// return productService.update(product);
+		//// Verificar logica si aplica la busqueda del flatMap
+		return productService.update(product).map(_product -> ResponseEntity.ok().body(_product)).onErrorResume(e -> {
+			log.info(e.getMessage());
+			return Mono.just(ResponseEntity.badRequest().build());
+		})
+		.defaultIfEmpty(ResponseEntity.noContent().build());
+	};
 
 	@DeleteMapping("/{idProducto}")
-	public Mono<Void> delete(@PathVariable(name = "idProducto") long idProducto) {
-		return productService.delete(idProducto);
+	public Mono<ResponseEntity<Void>> delete(@PathVariable(name = "idProducto") long idProducto) {
+		return productService.delete(idProducto)
+				.then(Mono.just(ResponseEntity.ok().build()));
 	}
 
 	@GetMapping("/fillData")
-	public Mono<Void>  fillData() {
-		  return productService.fillData();
-		//Mono<Void> e = productService.fillData();
-		//HttpStatus status = (e != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
-		//return new ResponseEntity<Mono<Void>>(e, status);
+	public Mono<Void> fillData() {
+		return productService.fillData();
+		// Mono<Void> e = productService.fillData();
+		// HttpStatus status = (e != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+		// return new ResponseEntity<Mono<Void>>(e, status);
 	}
 }

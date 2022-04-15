@@ -46,15 +46,17 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	public Mono<Configuration> update(Configuration configuration) {
 		//Verificar logica si aplica la busqueda del flatMap
 		Mono<Configuration> mono = configurationRepository.findById(configuration.getIdConfiguration())
-				.flatMap(objConfiguration -> {
-					return configurationRepository.save(objConfiguration);
+				.flatMap(objConfiguration -> {	
+					log.info("Update:"+configuration);
+					return configurationRepository.save(configuration);
 				});
 		return mono;
 	}
 
 	@Override
 	public Mono<Void> delete(Long id) {
-		Mono<Void> mono = configurationRepository.findById(id).flatMap(configuration -> {
+		Mono<Void> mono = configurationRepository.findById(id)
+				.flatMap(configuration -> {				
 			return configurationRepository.delete(configuration);
 		});
 		return mono;
