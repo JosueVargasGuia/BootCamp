@@ -45,28 +45,37 @@ public class ConfigurationController {
 	@GetMapping("/{idConfiguration}")
 	public Mono<ResponseEntity<Configuration>> findById(@PathVariable(name = "idConfiguration") long idConfiguration) {
 		return configurationService.findById(idConfiguration)
-				.map(configuration -> ResponseEntity.ok().body(configuration))
-				.onErrorResume(e -> {
+				.map(configuration -> ResponseEntity.ok().body(configuration)).onErrorResume(e -> {
 					log.info(e.getMessage());
 					return Mono.just(ResponseEntity.badRequest().build());
-				})
-				.defaultIfEmpty(ResponseEntity.noContent().build());
+				}).defaultIfEmpty(ResponseEntity.noContent().build());
 	}
 
 	@PutMapping
 	public Mono<ResponseEntity<Configuration>> update(@RequestBody Configuration configuration) {
-		return configurationService.update(configuration)
-				.map(_configuration -> ResponseEntity.ok().body(_configuration)).onErrorResume(e -> {
-					log.info(e.getMessage());
-					return Mono.just(ResponseEntity.badRequest().build());
-				})
-				.defaultIfEmpty(ResponseEntity.noContent().build());
+
+		Mono<Configuration> mono = configurationService.findById(configuration.getIdConfiguration())
+				.flatMap(objConfiguration -> {
+					log.info("Update:[new]" + configuration + " [Old]:" + objConfiguration);
+					return configurationService.update(configuration);
+				});
+
+		return mono.map(_configuration -> {
+			log.info("Status:" + HttpStatus.OK);
+			return ResponseEntity.ok().body(_configuration);
+		}).onErrorResume(e -> {
+			log.info("Status:" + HttpStatus.BAD_REQUEST + " menssage" + e.getMessage());
+			return Mono.just(ResponseEntity.badRequest().build());
+		}).defaultIfEmpty(ResponseEntity.noContent().build());
+	
 	}
 
 	@DeleteMapping("/{idConfiguration}")
 	public Mono<ResponseEntity<Void>> delete(@PathVariable(name = "idConfiguration") long idConfiguration) {
-		return configurationService.delete(idConfiguration)
-				.then(Mono.just(ResponseEntity.ok().build()));
+		return configurationService.findById(idConfiguration).flatMap(configuration -> {
+			return configurationService.delete(configuration.getIdConfiguration())
+					.then(Mono.just(ResponseEntity.ok().build()));
+		}) ;
 	}
 
 	@GetMapping("/fillData")

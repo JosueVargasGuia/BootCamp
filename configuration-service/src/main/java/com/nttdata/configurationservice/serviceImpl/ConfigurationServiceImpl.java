@@ -45,22 +45,22 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	@Override
 	public Mono<Configuration> update(Configuration configuration) {
 		//Verificar logica si aplica la busqueda del flatMap
-		Mono<Configuration> mono = configurationRepository.findById(configuration.getIdConfiguration())
+		/*Mono<Configuration> mono = configurationRepository.findById(configuration.getIdConfiguration())
 				.flatMap(objConfiguration -> {	
-					log.info("Update:"+configuration);
+					log.info("Update:[new]"+configuration +" [Old]:"+objConfiguration);
 					return configurationRepository.save(configuration);
-				});
-		return mono;
+				});*/
+		return configurationRepository.save(configuration);
 	}
 
 	@Override
 	public Mono<Void> delete(Long id) {
-		Mono<Void> mono = configurationRepository.findById(id)
+		/*Mono<Void> mono = configurationRepository.findById(id)
 				.flatMap(configuration -> {				
 			return configurationRepository.delete(configuration);
 		});
-		return mono;
-		// return configurationRepository.deleteById( id);
+		return mono;*/
+		  return configurationRepository.deleteById( id);
 	}
 
 	Long maxValue = Long.valueOf(0);// Buscar una solucion para el identity en mongodb

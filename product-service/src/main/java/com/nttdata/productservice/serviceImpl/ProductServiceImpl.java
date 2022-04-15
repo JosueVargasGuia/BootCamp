@@ -42,22 +42,22 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Mono<Product> update(Product product) {
-		Mono<Product> mono = productRepository.findById(product.getIdProducto())
+		/*Mono<Product> mono = productRepository.findById(product.getIdProducto())
 				.flatMap(objproduct -> {
 					return productRepository.save(product);
 				});
-		return mono;
-		 
+		return mono;*/
+		return productRepository.save(product);
 	}
 
 	@Override
 	public Mono<Void> delete(Long idProducto) {
-		Mono<Void> mono = productRepository.findById(idProducto).flatMap(producto -> {
+		/*Mono<Void> mono = productRepository.findById(idProducto).flatMap(producto -> {
 			return productRepository.delete(producto);
 		});
 		 mono.subscribe(p -> log.info(p.toString()));
-		return mono;
-		// return productRepository.deleteById(idProducto);
+		return productRepository.deleteById(idProducto);*/
+		 return productRepository.deleteById(idProducto);
 	}
 	
 	Long idProducto=Long.valueOf(0);

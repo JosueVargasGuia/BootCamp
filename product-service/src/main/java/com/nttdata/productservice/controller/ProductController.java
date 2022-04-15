@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+ 
 import com.nttdata.productservice.entity.Product;
 import com.nttdata.productservice.service.ProductService;
 
@@ -55,18 +55,30 @@ public class ProductController {
 	@PutMapping
 	public Mono<ResponseEntity<Product>> update(@RequestBody Product product) {
 		// return productService.update(product);
-		//// Verificar logica si aplica la busqueda del flatMap
-		return productService.update(product).map(_product -> ResponseEntity.ok().body(_product)).onErrorResume(e -> {
-			log.info(e.getMessage());
+		//// Verificar logica si aplica la busqueda del flatMap		
+		Mono<Product> mono =productService.findById(product.getIdProducto())
+				.flatMap(objProduct->{
+					log.info("Update:[new]" + product + " [Old]:" + objProduct);
+					return productService.update(product);
+				});
+		return mono.map(_product -> {
+			log.info("Status:" + HttpStatus.OK);
+			return ResponseEntity.ok().body(_product);})
+		.onErrorResume(e -> {
+			log.info("Status:" + HttpStatus.BAD_REQUEST + " menssage" + e.getMessage());
 			return Mono.just(ResponseEntity.badRequest().build());
 		})
 		.defaultIfEmpty(ResponseEntity.noContent().build());
+		 
 	};
 
 	@DeleteMapping("/{idProducto}")
 	public Mono<ResponseEntity<Void>> delete(@PathVariable(name = "idProducto") long idProducto) {
-		return productService.delete(idProducto)
-				.then(Mono.just(ResponseEntity.ok().build()));
+		return productService.findById(idProducto).
+				flatMap(producto->{
+					return productService.delete(producto.getIdConfiguration())
+							.then(Mono.just(ResponseEntity.ok().build()));
+				});
 	}
 
 	@GetMapping("/fillData")
