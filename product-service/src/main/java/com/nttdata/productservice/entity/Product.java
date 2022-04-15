@@ -1,8 +1,7 @@
 package com.nttdata.productservice.entity;
 
 import org.springframework.data.annotation.Id;
-
-import com.nttdata.productservice.model.Configuration;
+ 
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

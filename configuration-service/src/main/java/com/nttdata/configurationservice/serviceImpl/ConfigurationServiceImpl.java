@@ -1,14 +1,16 @@
 package com.nttdata.configurationservice.serviceImpl;
 
 import java.util.ArrayList;
- 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
- 
+
 import com.nttdata.configurationservice.entity.Configuration;
 import com.nttdata.configurationservice.repository.ConfigurationRepository;
 import com.nttdata.configurationservice.service.ConfigurationService;
@@ -31,7 +33,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Override
 	public Mono<Configuration> save(Configuration configuration) {
-		return configurationRepository.save(configuration);
+		return configurationRepository.insert(configuration);
 	}
 
 	@Override
@@ -42,8 +44,12 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Override
 	public Mono<Configuration> update(Configuration configuration) {
-		// TODO Auto-generated method stub
-		return configurationRepository.save(configuration);
+		//Verificar logica si aplica la busqueda del flatMap
+		Mono<Configuration> mono = configurationRepository.findById(configuration.getIdConfiguration())
+				.flatMap(objConfiguration -> {
+					return configurationRepository.save(objConfiguration);
+				});
+		return mono;
 	}
 
 	@Override
@@ -55,49 +61,56 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		// return configurationRepository.deleteById( id);
 	}
 
+	Long maxValue = Long.valueOf(0);// Buscar una solucion para el identity en mongodb
+
 	@Override
 	public Mono<Void> fillData() {
-		return configurationRepository.findAll().count().flatMap(x -> {
+		Mono<Void> mono = configurationRepository.findAll().count().flatMap(x -> {
 			log.info("Cantidad[X]:" + x);
-			if (x <= 0) {
-				List<Configuration> listaConfigurations = new ArrayList<Configuration>();
-				/*
-				 * Long idConfiguration; double costMaintenance;// Costo de mantenimiento int
-				 * quantityMovement;// Total de movimientos // TypeMovement TypeMovement;//tipo
-				 * int quantityCredit;// Cantidad de movimientos permitidos, si solo permite un
-				 * dia de moviento se // especifica fecha int specificDate;
-				 */
-				/*
-				 * idConfiguration,costMaintenance,quantityMovement,quantityCredit,specificDate
-				 */
-				// Ahorro: libre de comisión por mantenimiento y con un límite máximo de
-				// movimientos mensuales.
-				listaConfigurations.add(new Configuration(Long.valueOf(1), null, 5, null, null));
-				//  Cuenta corriente: posee comisión de mantenimiento y sin límite de
-				// movimientos mensuales.
-				listaConfigurations.add(new Configuration(Long.valueOf(2), 10.00, null, null, null));
-				//  Plazo fijo: libre de comisión por mantenimiento, solo permite un movimiento
-				// de retiro o depósito en un día específico del mes.
-				listaConfigurations.add(new Configuration(Long.valueOf(3), null, 1, null, "12"));
-				//  Personal: solo se permite un solo crédito por persona.
-				listaConfigurations.add(new Configuration(Long.valueOf(4), null, null, 1, null));
-				//  Empresarial: se permite más de un crédito por empresa.
-				listaConfigurations.add(new Configuration(Long.valueOf(5), null, null, null, null));
-				//  Tarjeta de Crédito empresarial.
-				listaConfigurations.add(new Configuration(Long.valueOf(6), null, null, null, null));
-				//  Tarjeta de Crédito empresarial.
-				listaConfigurations.add(new Configuration(Long.valueOf(6), null, null, null, null));
-				log.info("Fill data succefull configurations");
-				return Flux.fromIterable(listaConfigurations).flatMap(configurations -> {
-					log.info("[product]:" + configurations);
-					return configurationRepository.save(configurations);
-				}).then();
 
-			} else {
-				log.info("There are data");
-				return Mono.just("There are data configurations" );
-			}
+			// if (x <= 0) {
+			List<Configuration> listaConfigurations = new ArrayList<Configuration>();
+			/*
+			 * Long idConfiguration; double costMaintenance;// Costo de mantenimiento int
+			 * quantityMovement;// Total de movimientos // TypeMovement TypeMovement;//tipo
+			 * int quantityCredit;// Cantidad de movimientos permitidos, si solo permite un
+			 * dia de moviento se // especifica fecha int specificDate;
+			 */
+			/*
+			 * idConfiguration,costMaintenance,quantityMovement,quantityCredit,specificDate
+			 */
+			// Ahorro: libre de comisión por mantenimiento y con un límite máximo de
+			// movimientos mensuales.
+			listaConfigurations.add(new Configuration(Long.valueOf(1), null, 5, null, null));
+			//  Cuenta corriente: posee comisión de mantenimiento y sin límite de
+			// movimientos mensuales.
+			listaConfigurations.add(new Configuration(Long.valueOf(2), 10.00, null, null, null));
+			//  Plazo fijo: libre de comisión por mantenimiento, solo permite un movimiento
+			// de retiro o depósito en un día específico del mes.
+			listaConfigurations.add(new Configuration(Long.valueOf(3), null, 1, null, "12"));
+			//  Personal: solo se permite un solo crédito por persona.
+			listaConfigurations.add(new Configuration(Long.valueOf(4), null, null, 1, null));
+			//  Empresarial: se permite más de un crédito por empresa.
+			listaConfigurations.add(new Configuration(Long.valueOf(5), null, null, null, null));
+			//  Tarjeta de Crédito empresarial.
+			listaConfigurations.add(new Configuration(Long.valueOf(6), null, null, null, null));
+			//  Tarjeta de Crédito empresarial.
+			listaConfigurations.add(new Configuration(Long.valueOf(7), null, null, null, null));
+
+			maxValue = Long.valueOf(x);
+			return Flux.fromIterable(listaConfigurations).flatMap(configurations -> {
+				maxValue = maxValue + 1;
+				log.info("[product]:" + configurations + "c:" + x);
+				configurations.setIdConfiguration(maxValue);
+				return this.save(configurations);
+			}).then();
+
+			// } else {
+			// log.info("There are data");
+			// return Mono.just("There are data configurations");
+			// }
 		}).then();
+		return mono;
 	}
 
 }
