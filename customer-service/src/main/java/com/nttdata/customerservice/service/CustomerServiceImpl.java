@@ -20,6 +20,13 @@ public class CustomerServiceImpl implements CustomerService {
 	public Flux<Customer> getAllCustomers() {
 		return repository.findAll();
 	}
+	
+	@Override
+	public Mono<ResponseEntity<Customer>> getById(String id) {
+		return repository.findById(id)
+				.map(customer -> ResponseEntity.ok(customer))
+				.defaultIfEmpty(ResponseEntity.notFound().build());
+	}
 
 	@Override
 	public Mono<ResponseEntity<Customer>> saveCustomer(Customer customer) {
@@ -43,12 +50,6 @@ public class CustomerServiceImpl implements CustomerService {
 				.defaultIfEmpty(ResponseEntity.badRequest().build());
 	}
 
-	@Override
-	public Mono<ResponseEntity<Customer>> getById(String id) {
-		return repository.findById(id)
-				.map(customer -> ResponseEntity.ok(customer))
-				.defaultIfEmpty(ResponseEntity.notFound().build());
-	}
 
 	@Override
 	public Mono<ResponseEntity<Void>> delete(String id) {

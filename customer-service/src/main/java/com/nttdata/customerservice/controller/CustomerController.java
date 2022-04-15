@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public class CustomerController {
 	
 	@Autowired
-	CustomerService service;
+	private CustomerService service;
 	
 	@GetMapping("/getAll")
 	public Flux<Customer> listAllCustomers(){
