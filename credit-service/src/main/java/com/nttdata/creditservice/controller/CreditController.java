@@ -1,5 +1,79 @@
 package com.nttdata.creditservice.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+ 
+import com.nttdata.creditservice.entity.Credit;
+import com.nttdata.creditservice.service.CreditService;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+@RestController
+@RequestMapping("/credit")
 public class CreditController {
+	Logger log = LoggerFactory.getLogger(CreditController.class);
+	@Autowired
+	CreditService creditService;
+
+	@GetMapping
+	public Flux<Credit> findAll() {
+		return creditService.findAll();
+	}
+
+	@PostMapping
+	public Mono<ResponseEntity<Credit>> save(@RequestBody Credit credit) {
+		return creditService.save(credit)
+				.map(_credit -> ResponseEntity.ok().body(_credit)).onErrorResume(e -> {
+			log.info("Error:" + e.getMessage());
+			return Mono.just(ResponseEntity.badRequest().build());
+		});
+	}
+
+	@GetMapping("/{idProductCredit}")
+	public Mono<ResponseEntity<Credit>> findById(@PathVariable(name = "idProductCredit") long idProductCredit) {
+		return creditService.findById(idProductCredit).map(configuration -> ResponseEntity.ok().body(configuration))
+				.onErrorResume(e -> {
+					log.info(e.getMessage());
+					return Mono.just(ResponseEntity.badRequest().build());
+				}).defaultIfEmpty(ResponseEntity.noContent().build());
+	}
+
+	@PutMapping
+	public Mono<ResponseEntity<Credit>> update(@RequestBody Credit credit) {
+
+		Mono<Credit> mono = creditService.findById(credit.getIdProductCredit()).flatMap(objCredit -> {
+			log.info("Update:[new]" + credit + " [Old]:" + objCredit);
+			return creditService.update(credit);
+		});
+
+		return mono.map(_credit -> {
+			log.info("Status:" + HttpStatus.OK);
+			return ResponseEntity.ok().body(_credit);
+		}).onErrorResume(e -> {
+			log.info("Status:" + HttpStatus.BAD_REQUEST + " menssage" + e.getMessage());
+			return Mono.just(ResponseEntity.badRequest().build());
+		}).defaultIfEmpty(ResponseEntity.noContent().build());
+
+	}
+
+	@DeleteMapping("/{idProductCredit}")
+	public Mono<ResponseEntity<Void>> delete(@PathVariable(name = "idProductCredit") long idProductCredit) {
+		return creditService.findById(idProductCredit).flatMap(credit -> {
+			return creditService.delete(credit.getIdProductCredit()).then(Mono.just(ResponseEntity.ok().build()));
+		});
+	}
 
 }

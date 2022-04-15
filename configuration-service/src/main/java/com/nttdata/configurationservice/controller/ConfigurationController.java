@@ -67,7 +67,7 @@ public class ConfigurationController {
 			log.info("Status:" + HttpStatus.BAD_REQUEST + " menssage" + e.getMessage());
 			return Mono.just(ResponseEntity.badRequest().build());
 		}).defaultIfEmpty(ResponseEntity.noContent().build());
-	
+
 	}
 
 	@DeleteMapping("/{idConfiguration}")
@@ -75,7 +75,7 @@ public class ConfigurationController {
 		return configurationService.findById(idConfiguration).flatMap(configuration -> {
 			return configurationService.delete(configuration.getIdConfiguration())
 					.then(Mono.just(ResponseEntity.ok().build()));
-		}) ;
+		});
 	}
 
 	@GetMapping("/fillData")

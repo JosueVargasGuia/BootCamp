@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.nttdata</groupId>
-	<artifactId>credit-service</artifactId>
+	<artifactId>movementCredit-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>credit-service</name>
+	<name>movementCredit-service</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
@@ -88,4 +88,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>
