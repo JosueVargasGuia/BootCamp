@@ -1,10 +1,7 @@
 package com.nttdata.movementCreditservice.controller;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.nttdata.movementCreditservice.entity.MovementCredit;
 import com.nttdata.movementCreditservice.service.MovementCreditService;
+import com.nttdata.movementCreditservice.model.Credit;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -85,11 +84,24 @@ public class MovementCreditController {
 
 	@PostMapping("/recordsMovement")
 	public Mono<ResponseEntity<Map<String, Object>>> recordsMovement(@RequestBody MovementCredit movementCredit) {
-		return Mono.just(movementCreditService.recordsMovement(movementCredit))
-				.map(_object -> ResponseEntity.ok().body(_object)).onErrorResume(e -> {
-					log.info("Error:" + e.getMessage());
-					return Mono.just(ResponseEntity.badRequest().build());
+		return movementCreditService.recordsMovement(movementCredit).map(_val -> ResponseEntity.ok().body(_val))
+				.onErrorResume(e -> {
+					log.info("Status:" + HttpStatus.BAD_REQUEST + " menssage" + e.getMessage());
+					Map<String, Object> hashMap = new HashMap<>();
+					hashMap.put("Error", e.getMessage());
+					return Mono.just(ResponseEntity.badRequest().body(hashMap));
 				}).defaultIfEmpty(ResponseEntity.noContent().build());
 	}
 
+	@PostMapping("/balanceInquiry")
+	public Mono<ResponseEntity<Map<String, Object>>> balanceInquiry(
+			@RequestBody  Credit Credit) {
+		return movementCreditService.balanceInquiry(Credit).map(_val -> ResponseEntity.ok().body(_val))
+				.onErrorResume(e -> {
+					log.info("Status:" + HttpStatus.BAD_REQUEST + " menssage" + e.getMessage());
+					Map<String, Object> hashMap = new HashMap<>();
+					hashMap.put("Error", e.getMessage());
+					return Mono.just(ResponseEntity.badRequest().body(hashMap));
+				}).defaultIfEmpty(ResponseEntity.noContent().build());
+	}
 }

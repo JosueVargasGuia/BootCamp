@@ -20,5 +20,10 @@ public class MovementCredit {
 	Date dateMovement;
 	TypeMovementCredit typeMovementCredit;
 	Long idCredit;
+	@Override
+	public String toString() {
+		return "MovementCredit [idMovementCredit=" + idMovementCredit + ", amount=" + amount + ", dateMovement="
+				+ dateMovement + ", typeMovementCredit=" + typeMovementCredit + ", idCredit=" + idCredit + "]";
+	}
 
 }

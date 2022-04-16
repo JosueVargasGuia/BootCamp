@@ -84,9 +84,9 @@ public class CreditServiceImpl implements CreditService {
 			hashMap.put("Product", "Producto no encontrado.");
 			isValid = false;
 		}
-		Customer customer = null;
-		if (this.findByIdCustomer(credit.getIdCustomer()) != null) {
-			customer = this.findByIdCustomer(credit.getIdCustomer());
+		Customer customer = this.findByIdCustomer(credit.getIdCustomer());
+		if (customer != null) {
+			//customer = this.findByIdCustomer(credit.getIdCustomer());
 			if (customer.getTypeCustomer() == TypeCustomer.empresarial) {
 				hashMap.put("Product", "El cliente no puede tener una cuenta de credito.");
 				isValid = false;

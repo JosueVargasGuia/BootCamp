@@ -1,5 +1,6 @@
 package com.nttdata.movementCreditservice.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +21,12 @@ public interface MovementCreditService {
 
 	Mono<Void> delete(Long idMovementCredit);
 
-	Map<String, Object> recordsMovement(MovementCredit movementCredit);
-	 
-	Credit findByIdProduc(Long idCredit);
-	
+	Mono<Map<String, Object>>  recordsMovement(MovementCredit movementCredit);
+
+	Credit findByIdCredit(Long idCredit);
+
+	Mono<Map<String, Object>> balanceInquiry(Credit credit);
+
+	//List<MovementCredit> findAllList();
+
 }

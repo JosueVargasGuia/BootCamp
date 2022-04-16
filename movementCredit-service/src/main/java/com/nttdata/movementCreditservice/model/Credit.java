@@ -14,4 +14,10 @@ public class Credit {
 	Long idCustomer;
 	Long idProducto;
 	Double amountCreditLimit;
+	@Override
+	public String toString() {
+		return "Credit [idCredit=" + idCredit + ", idCustomer=" + idCustomer + ", idProducto=" + idProducto
+				+ ", amountCreditLimit=" + amountCreditLimit + "]";
+	}
+	
 }
