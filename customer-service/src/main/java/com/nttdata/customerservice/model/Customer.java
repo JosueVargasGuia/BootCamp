@@ -20,6 +20,7 @@ public class Customer {
 	private String lastname;
 	private String documentNumber;
 	private TypeDocument typeDocument;
+	private TypeCustomer typeCustomer;
 	private String emailAddress;
 	private String phoneNumber;
 	private String homeAddress;

@@ -17,8 +17,8 @@ public class CustomerServiceImpl implements CustomerService {
 	CustomerRepository repository;
 
 	@Override
-	public Flux<Customer> getAllCustomers() {
-		return repository.findAll();
+	public Flux<ResponseEntity<Customer>> getAllCustomers() {
+		return repository.findAll().map(customer -> ResponseEntity.ok(customer));
 	}
 	
 	@Override
@@ -42,6 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
 					customer.setLastname(currentCustomer.getLastname());
 					customer.setDocumentNumber(currentCustomer.getDocumentNumber());
 					customer.setTypeDocument(currentCustomer.getTypeDocument());
+					customer.setTypeCustomer(currentCustomer.getTypeCustomer());
 					customer.setEmailAddress(currentCustomer.getEmailAddress());
 					customer.setHomeAddress(currentCustomer.getHomeAddress());
 					customer.setPhoneNumber(currentCustomer.getPhoneNumber());

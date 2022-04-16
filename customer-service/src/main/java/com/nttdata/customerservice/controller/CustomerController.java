@@ -25,7 +25,7 @@ public class CustomerController {
 	private CustomerService service;
 	
 	@GetMapping("/getAll")
-	public Flux<Customer> listAllCustomers(){
+	public Flux<ResponseEntity<Customer>> listAllCustomers(){
 		return service.getAllCustomers();
 	}
 	

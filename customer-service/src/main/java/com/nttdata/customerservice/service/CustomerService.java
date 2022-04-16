@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 
 public interface CustomerService {
 	
-	Flux<Customer> getAllCustomers();
+	Flux<ResponseEntity<Customer>> getAllCustomers();
 	Mono<ResponseEntity<Customer>> saveCustomer(Customer customer);
 	Mono<ResponseEntity<Customer>> updateCustomer(Customer customer);
 	Mono<ResponseEntity<Customer>> getById(String id);
