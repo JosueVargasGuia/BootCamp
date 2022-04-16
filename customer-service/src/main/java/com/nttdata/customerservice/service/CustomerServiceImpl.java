@@ -40,10 +40,11 @@ public class CustomerServiceImpl implements CustomerService {
 				.flatMap(currentCustomer -> {
 					customer.setFirstname(currentCustomer.getFirstname());
 					customer.setLastname(currentCustomer.getLastname());
-					customer.setDni(currentCustomer.getDni());
-					customer.setEmail_address(currentCustomer.getEmail_address());
-					customer.setHome_address(currentCustomer.getHome_address());
-					customer.setPhone_number(currentCustomer.getPhone_number());
+					customer.setDocumentNumber(currentCustomer.getDocumentNumber());
+					customer.setTypeDocument(currentCustomer.getTypeDocument());
+					customer.setEmailAddress(currentCustomer.getEmailAddress());
+					customer.setHomeAddress(currentCustomer.getHomeAddress());
+					customer.setPhoneNumber(currentCustomer.getPhoneNumber());
 					return repository.save(customer);
 				})
 				.map(updatedCustomer -> ResponseEntity.ok(updatedCustomer))

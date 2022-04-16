@@ -18,9 +18,10 @@ public class Customer {
 	private String id;
 	private String firstname;
 	private String lastname;
-	private String dni;
-	private String email_address;
-	private String phone_number;
-	private String home_address;
+	private String documentNumber;
+	private TypeDocument typeDocument;
+	private String emailAddress;
+	private String phoneNumber;
+	private String homeAddress;
 	
 }
