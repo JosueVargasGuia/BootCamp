@@ -42,9 +42,9 @@ public class CreditController {
 		});
 	}
 
-	@GetMapping("/{idProductCredit}")
-	public Mono<ResponseEntity<Credit>> findById(@PathVariable(name = "idProductCredit") long idProductCredit) {
-		return creditService.findById(idProductCredit).map(configuration -> ResponseEntity.ok().body(configuration))
+	@GetMapping("/{idCredit}")
+	public Mono<ResponseEntity<Credit>> findById(@PathVariable(name = "idCredit") long idCredit) {
+		return creditService.findById(idCredit).map(configuration -> ResponseEntity.ok().body(configuration))
 				.onErrorResume(e -> {
 					log.info(e.getMessage());
 					return Mono.just(ResponseEntity.badRequest().build());
@@ -54,7 +54,7 @@ public class CreditController {
 	@PutMapping
 	public Mono<ResponseEntity<Credit>> update(@RequestBody Credit credit) {
 
-		Mono<Credit> mono = creditService.findById(credit.getIdProductCredit()).flatMap(objCredit -> {
+		Mono<Credit> mono = creditService.findById(credit.getIdCredit()).flatMap(objCredit -> {
 			log.info("Update:[new]" + credit + " [Old]:" + objCredit);
 			return creditService.update(credit);
 		});
@@ -69,10 +69,10 @@ public class CreditController {
 
 	}
 
-	@DeleteMapping("/{idProductCredit}")
-	public Mono<ResponseEntity<Void>> delete(@PathVariable(name = "idProductCredit") long idProductCredit) {
-		return creditService.findById(idProductCredit).flatMap(credit -> {
-			return creditService.delete(credit.getIdProductCredit()).then(Mono.just(ResponseEntity.ok().build()));
+	@DeleteMapping("/{idCredit}")
+	public Mono<ResponseEntity<Void>> delete(@PathVariable(name = "idCredit") long idCredit) {
+		return creditService.findById(idCredit).flatMap(credit -> {
+			return creditService.delete(credit.getIdCredit()).then(Mono.just(ResponseEntity.ok().build()));
 		});
 	}
 

@@ -1,7 +1,8 @@
-package com.nttdata.productservice.entity;
+package com.nttdata.movementCreditservice.model;
 
 import org.springframework.data.annotation.Id;
 
+ 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-	@Id
+ 
 	private Long idProducto;
 	private String descriptionProducto;
 	private TypeProduct typeProduct;

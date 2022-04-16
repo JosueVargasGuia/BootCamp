@@ -9,12 +9,12 @@ public interface CreditService {
 	
 	Flux<Credit> findAll();
 
-	Mono<Credit> findById(long idConfiguration);
+	Mono<Credit> findById(Long idCredit);
 
-	Mono<Credit> save(Credit configuration);
+	Mono<Credit> save(Credit credit);
 
-	Mono<Credit> update(Credit configuration);
+	Mono<Credit> update(Credit credit);
 
-	Mono<Void> delete(Long id);
+	Mono<Void> delete(Long idCredit);
 
 }

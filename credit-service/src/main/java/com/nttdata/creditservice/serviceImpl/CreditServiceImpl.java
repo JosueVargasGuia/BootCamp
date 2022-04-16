@@ -20,17 +20,17 @@ public class CreditServiceImpl implements CreditService {
 	@Override
 	public Flux<Credit> findAll() {
 		return creditRepository.findAll()
-				.sort((credit1, credit2) -> credit1.getIdProductCredit().compareTo(credit2.getIdProductCredit()));
+				.sort((credit1, credit2) -> credit1.getIdCredit().compareTo(credit2.getIdCredit()));
 	}
 
 	@Override
-	public Mono<Credit> save(Credit configuration) {
-		return creditRepository.insert(configuration);
+	public Mono<Credit> save(Credit credit) {
+		return creditRepository.insert(credit);
 	}
 
 	@Override
-	public Mono<Credit> findById(long idConfiguration) {
-		return creditRepository.findById(idConfiguration);
+	public Mono<Credit> findById(Long idCredit) {
+		return creditRepository.findById(idCredit);
 	}
 
 	@Override
@@ -39,8 +39,8 @@ public class CreditServiceImpl implements CreditService {
 	}
 
 	@Override
-	public Mono<Void> delete(Long idProductCredit) {
-		return creditRepository.deleteById(idProductCredit);
+	public Mono<Void> delete(Long idCredit) {
+		return creditRepository.deleteById(idCredit);
 	}
 
 }
