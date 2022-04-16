@@ -3,6 +3,7 @@ package com.nttdata.movementCreditservice.controller;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,13 +18,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-
 import com.nttdata.movementCreditservice.entity.MovementCredit;
-import com.nttdata.movementCreditservice.model.Product;
 import com.nttdata.movementCreditservice.service.MovementCreditService;
- 
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -34,9 +30,8 @@ public class MovementCreditController {
 	@Autowired
 	MovementCreditService movementCreditService;
 
-	
-	//RestTemplate restTemplate=new RestTemplate();
-	
+	// RestTemplate restTemplate=new RestTemplate();
+
 	@GetMapping
 	public Flux<MovementCredit> findAll() {
 		return movementCreditService.findAll();
@@ -87,22 +82,14 @@ public class MovementCreditController {
 					.then(Mono.just(ResponseEntity.ok().build()));
 		});
 	}
-	@GetMapping("/test")
-	public List<Product> test() {
-	 /*try {
-		 
-			List<Product>lista=movementCreditService.findAllProducto();
-	 
-			
-			for (Product product : lista) {
-				log.info("Product:" + product.toString());
-			}
-	} catch (Exception e) {
-		log.info(e.getMessage());
-		e.printStackTrace();
-	}*/
-		
-		//return ResponseEntity.ok().build();
-	 return movementCreditService.findAllProducto();
+
+	@PostMapping("/recordsMovement")
+	public Mono<ResponseEntity<Map<String, Object>>> recordsMovement(@RequestBody MovementCredit movementCredit) {
+		return Mono.just(movementCreditService.recordsMovement(movementCredit))
+				.map(_object -> ResponseEntity.ok().body(_object)).onErrorResume(e -> {
+					log.info("Error:" + e.getMessage());
+					return Mono.just(ResponseEntity.badRequest().build());
+				}).defaultIfEmpty(ResponseEntity.noContent().build());
 	}
+
 }

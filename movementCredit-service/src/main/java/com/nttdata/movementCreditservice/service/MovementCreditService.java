@@ -1,9 +1,10 @@
 package com.nttdata.movementCreditservice.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.nttdata.movementCreditservice.entity.MovementCredit;
-import com.nttdata.movementCreditservice.model.Product;
+import com.nttdata.movementCreditservice.model.Credit;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -19,5 +20,8 @@ public interface MovementCreditService {
 
 	Mono<Void> delete(Long idMovementCredit);
 
-	List<Product> findAllProducto();
+	Map<String, Object> recordsMovement(MovementCredit movementCredit);
+	 
+	Credit findByIdProduc(Long idCredit);
+	
 }

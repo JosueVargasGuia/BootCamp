@@ -22,6 +22,7 @@ public class Configuration {
 	Integer quantityCredit;// Cantidad de movimientos permitidos, si solo permite un dia de moviento se
 						// especifica fecha
 	String specificDate;
+	
 	@Override
 	public String toString() {
 		return "Configuration [idConfiguration=" + idConfiguration + ", costMaintenance=" + costMaintenance

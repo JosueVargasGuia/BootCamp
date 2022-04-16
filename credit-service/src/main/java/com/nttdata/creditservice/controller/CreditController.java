@@ -76,8 +76,8 @@ public class CreditController {
 		});
 	}
 	@PostMapping("/registerAccountCredit")
-	Mono<ResponseEntity<Map<String, Object>>> registerAccountCredit(@RequestBody Credit credit) {
-		return Mono.just(creditService.registerAccountCredit(null))
+	public Mono<ResponseEntity<Map<String, Object>>> registerAccountCredit(@RequestBody Credit credit) {
+		return Mono.just(creditService.registerAccountCredit(credit))
 				.map(_object -> ResponseEntity.ok().body(_object))
 				.onErrorResume(e -> {
 					log.info("Error:" + e.getMessage());
