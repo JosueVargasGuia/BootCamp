@@ -1,6 +1,6 @@
 package com.nttdata.configurationservice.service;
 
-import com.nttdata.configurationservice.model.Configuration;
+import com.nttdata.configurationservice.entity.Configuration;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,4 +16,6 @@ public interface ConfigurationService {
 	Mono<Configuration> update(Configuration configuration);
 
 	Mono<Void> delete(Long id);
+
+	Mono<Void> fillData();
 }
