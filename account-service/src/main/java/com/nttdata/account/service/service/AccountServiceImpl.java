@@ -93,19 +93,19 @@ public class AccountServiceImpl implements AccountService {
 			if(product.getTypeProduct() == TypeProduct.pasivos) {
 				if (isValidAhorro || isValidCorriente || isValidFijo) { // validar si es true para que al seguir la condicion la proxima vez ya sea false
 					if (product.getDescriptionProducto() == "Ahorro") {
-						Mono.fromRunnable(() -> this.saveAccount(account)).subscribe(e -> System.out.println("fromRunnable:" + e.toString()));
+						this.saveAccount(account).subscribe(e -> System.out.println("fromRunnable:" + e.toString()));
 						isValidAhorro=false;
-						hashMap.put("Account: ", account);
+						hashMap.put("Account: ", "Cuenta de Ahorro registrada");
 					}
 					if (product.getDescriptionProducto() == "Cuenta corriente") {
-						Mono.fromRunnable(() -> this.saveAccount(account)).subscribe(e -> System.out.println("fromRunnable:" + e.toString()));
+						this.saveAccount(account).subscribe(e -> System.out.println("fromRunnable:" + e.toString()));
 						isValidCorriente=false;
-						hashMap.put("Account: ", account);
+						hashMap.put("Account: ", "Cuenta corriente registrada");
 					}
 					if (product.getDescriptionProducto() == "Plazo fijo") {
-						Mono.fromRunnable(() -> this.saveAccount(account)).subscribe(e -> System.out.println("fromRunnable:" + e.toString()));
+						this.saveAccount(account).subscribe(e -> System.out.println("fromRunnable:" + e.toString()));
 						isValidFijo=false;
-						hashMap.put("Account: ", account);
+						hashMap.put("Account: ", "Cuenta a Plazo fijo registrada");
 					}
 				}else {
 					hashMap.put("Account", "Se ha registro el límite máximo de cuentas.");
@@ -114,15 +114,14 @@ public class AccountServiceImpl implements AccountService {
 		}else { // si es del tipo empresarial permitir solo multiples cuentas corrientes
 			if(product.getTypeProduct() == TypeProduct.pasivos) {
 				if (product.getDescriptionProducto() == "Cuenta corriente") {
-					Mono.fromRunnable(() -> this.saveAccount(account)).subscribe(e -> System.out.println("fromRunnable:" + e.toString()));
-					hashMap.put("Account: ", account);
+					 this.saveAccount(account).subscribe(e -> System.out.println("fromRunnable:" + e.toString()));
+					hashMap.put("Account: ", "Cuenta corriente registrada.");
 				}else {
 					hashMap.put("Account: ", "No es posible abrir una cuenta de " + product.getDescriptionProducto());
 				}
 			}
 		}	
 		
-		System.out.println("Hola: "+ hashMap);
 		return hashMap;
 
 	}
