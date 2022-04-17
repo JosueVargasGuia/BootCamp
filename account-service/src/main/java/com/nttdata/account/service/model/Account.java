@@ -16,8 +16,9 @@ import lombok.Setter;
 public class Account {
 	
 	@Id
-	private String idAccount;
+	private String id;
+	private String idProduct; //typeAccount = typeProduct
 	private String idCustomer;
-	private String idProduct;
-
+	private Integer quantityAccount; //limitar la cuenta si es cliente personal
+	//account
 }
