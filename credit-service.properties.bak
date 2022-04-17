@@ -3,4 +3,5 @@ spring.data.mongodb.database=bank
 spring.data.mongodb.host=localhost
 spring.data.mongodb.port=27017
 api.product-service.uri=http://localhost:8083/product
+api.movementCredit-service.uri=http://localhost:8085/movementCredit
 api.customer-service.uri=http://localhost:8085/customer

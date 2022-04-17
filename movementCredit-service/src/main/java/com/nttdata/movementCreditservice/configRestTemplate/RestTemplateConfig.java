@@ -1,4 +1,4 @@
-package com.nttdata.movementCreditservice.config;
+package com.nttdata.movementCreditservice.configRestTemplate;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;

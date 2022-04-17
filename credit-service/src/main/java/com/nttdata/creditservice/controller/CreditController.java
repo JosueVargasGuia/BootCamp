@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nttdata.creditservice.entity.Credit;
+import com.nttdata.creditservice.model.MovementCredit;
 import com.nttdata.creditservice.service.CreditService;
 
 import reactor.core.publisher.Flux;
@@ -83,5 +84,9 @@ public class CreditController {
 					log.info("Error:" + e.getMessage());
 					return Mono.just(ResponseEntity.badRequest().build());
 				}).defaultIfEmpty(ResponseEntity.noContent().build());
+	}
+	@GetMapping("/consultMovements/{idCredit}")
+	public Flux<MovementCredit> consultMovements(@PathVariable(name = "idCredit") Long idCredit) {
+		return creditService.consultMovements(idCredit);
 	}
 }

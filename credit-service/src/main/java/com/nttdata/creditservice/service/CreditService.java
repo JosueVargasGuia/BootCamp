@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.nttdata.creditservice.entity.Credit;
 import com.nttdata.creditservice.model.Customer;
+import com.nttdata.creditservice.model.MovementCredit;
 import com.nttdata.creditservice.model.Product;
 
 import reactor.core.publisher.Flux;
@@ -26,5 +27,7 @@ public interface CreditService {
 	Product findByIdProduct(Long idProducto);
 
 	Customer findByIdCustomer(Long idCustomer);
-
+	
+	Flux<MovementCredit> consultMovements(Long idCredit);
+	
 }

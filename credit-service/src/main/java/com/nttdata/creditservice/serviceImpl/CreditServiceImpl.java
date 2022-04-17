@@ -1,6 +1,7 @@
 package com.nttdata.creditservice.serviceImpl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.nttdata.creditservice.entity.Credit;
 import com.nttdata.creditservice.model.Customer;
+import com.nttdata.creditservice.model.MovementCredit;
 import com.nttdata.creditservice.model.Product;
 import com.nttdata.creditservice.model.TypeCustomer;
 import com.nttdata.creditservice.model.TypeDocumento;
@@ -35,12 +37,12 @@ public class CreditServiceImpl implements CreditService {
 	RestTemplate restTemplate;
 
 	@Value("${api.customer-service.uri}")
-	private String customerService = "";
+	private String customerService  ;
 
 	@Value("${api.product-service.uri}")
-	private String productService = "";
+	private String productService  ;
 
-	@Value("api.movementCredit-service.uri")
+	@Value("${api.movementCredit-service.uri}")
 	private String movementCreditService;
 
 	@Override
@@ -144,6 +146,20 @@ public class CreditServiceImpl implements CreditService {
 			return null;
 		}
 
+	}
+
+	@Override
+	public Flux<MovementCredit> consultMovements(Long idCredit) {
+		log.info(movementCreditService);
+		ResponseEntity<List<MovementCredit>> responseGet = restTemplate.exchange(movementCreditService, HttpMethod.GET, null,
+				new ParameterizedTypeReference<List<MovementCredit>>() {
+				});
+		if (responseGet.getStatusCode() == HttpStatus.OK) {
+			List<MovementCredit> list = responseGet.getBody();
+			return Flux.fromIterable(list).filter(movementCredit->movementCredit.getIdCredit()==idCredit);
+		} else {
+			return null;
+		}		 
 	}
 
 }
