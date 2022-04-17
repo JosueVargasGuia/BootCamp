@@ -36,8 +36,12 @@ public class CreditServiceImpl implements CreditService {
 
 	@Value("${api.customer-service.uri}")
 	private String customerService = "";
+
 	@Value("${api.product-service.uri}")
 	private String productService = "";
+
+	@Value("api.movementCredit-service.uri")
+	private String movementCreditService;
 
 	@Override
 	public Flux<Credit> findAll() {
@@ -86,7 +90,7 @@ public class CreditServiceImpl implements CreditService {
 		}
 		Customer customer = this.findByIdCustomer(credit.getIdCustomer());
 		if (customer != null) {
-			//customer = this.findByIdCustomer(credit.getIdCustomer());
+			// customer = this.findByIdCustomer(credit.getIdCustomer());
 			if (customer.getTypeCustomer() == TypeCustomer.empresarial) {
 				hashMap.put("Product", "El cliente no puede tener una cuenta de credito.");
 				isValid = false;
@@ -131,11 +135,11 @@ public class CreditServiceImpl implements CreditService {
 		 * document; TypeDocumento typeDocumento;
 		 */
 		if (idCustomer == 1) {
-			return new Customer(idCustomer, TypeCustomer.personal, "Josue", "Vargas Guia", "josue@nttdata.com", "941451121",
-					"jr.- calle", "45519040", TypeDocumento.dni);
+			return new Customer(idCustomer, TypeCustomer.personal, "Josue", "Vargas Guia", "josue@nttdata.com",
+					"941451121", "jr.- calle", "45519040", TypeDocumento.dni);
 		} else if (idCustomer == 2) {
-			return new Customer(idCustomer, TypeCustomer.empresarial, "Josue", "Vargas Guia", "josue@nttdata.com", "941451121",
-					"jr.- calle", "45519040", TypeDocumento.dni);
+			return new Customer(idCustomer, TypeCustomer.empresarial, "Josue", "Vargas Guia", "josue@nttdata.com",
+					"941451121", "jr.- calle", "45519040", TypeDocumento.dni);
 		} else {
 			return null;
 		}

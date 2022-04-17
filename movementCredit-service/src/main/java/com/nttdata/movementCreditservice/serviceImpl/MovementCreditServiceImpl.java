@@ -1,18 +1,10 @@
 package com.nttdata.movementCreditservice.serviceImpl;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collector;
+ 
+import java.util.Calendar; 
+import java.util.HashMap; 
+import java.util.Map; 
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +20,6 @@ import com.nttdata.movementCreditservice.entity.TypeMovementCredit;
 import com.nttdata.movementCreditservice.model.Credit;
 import com.nttdata.movementCreditservice.repository.MovementCreditRepository;
 import com.nttdata.movementCreditservice.service.MovementCreditService;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
