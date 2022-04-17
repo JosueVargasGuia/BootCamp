@@ -1,7 +1,5 @@
-package com.nttdata.customerservice.model;
+package com.nttdata.account.service.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Document(collection="customers")
 public class Customer {
-	
-	@Id
 	private String id;
 	private String firstname;
 	private String lastname;
@@ -24,5 +19,13 @@ public class Customer {
 	private String emailAddress;
 	private String phoneNumber;
 	private String homeAddress;
+	@Override
+	public String toString() {
+		return "Customer [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", documentNumber="
+				+ documentNumber + ", typeDocument=" + typeDocument + ", typeCustomer=" + typeCustomer
+				+ ", emailAddress=" + emailAddress + ", phoneNumber=" + phoneNumber + ", homeAddress=" + homeAddress
+				+ "]";
+	}
+	
 	
 }

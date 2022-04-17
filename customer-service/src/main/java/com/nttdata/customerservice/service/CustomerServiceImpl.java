@@ -1,6 +1,7 @@
 package com.nttdata.customerservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.nttdata.customerservice.model.Customer;
@@ -13,36 +14,49 @@ import reactor.core.publisher.Mono;
 public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
-	private CustomerRepository repository;
+	CustomerRepository repository;
+
+	@Override
+	public Flux<ResponseEntity<Customer>> getAllCustomers() {
+		return repository.findAll().map(customer -> ResponseEntity.ok(customer));
+	}
 	
 	@Override
-	public Flux<Customer> findAllCustomers() {
-		return Flux.fromIterable(repository.findAll());
+	public Mono<ResponseEntity<Customer>> getById(String id) {
+		return repository.findById(id)
+				.map(customer -> ResponseEntity.ok(customer))
+				.defaultIfEmpty(ResponseEntity.notFound().build());
 	}
 
 	@Override
-	public Mono<Customer> saveCustomer(Customer customer) {
-		return Mono.just(repository.save(customer));
+	public Mono<ResponseEntity<Customer>> saveCustomer(Customer customer) {
+		return repository.save(customer).map(savedCustomer -> ResponseEntity.ok(savedCustomer));
 	}
 
 	@Override
-	public Mono<Customer> updateCustomer(Customer customer) {
-		// TODO Auto-generated method stub
-		return null;
+	public Mono<ResponseEntity<Customer>> updateCustomer(Customer customer) {
+
+		return repository.findById(customer.getId())
+				.flatMap(currentCustomer -> {
+					customer.setFirstname(currentCustomer.getFirstname());
+					customer.setLastname(currentCustomer.getLastname());
+					customer.setDocumentNumber(currentCustomer.getDocumentNumber());
+					customer.setTypeDocument(currentCustomer.getTypeDocument());
+					customer.setTypeCustomer(currentCustomer.getTypeCustomer());
+					customer.setEmailAddress(currentCustomer.getEmailAddress());
+					customer.setHomeAddress(currentCustomer.getHomeAddress());
+					customer.setPhoneNumber(currentCustomer.getPhoneNumber());
+					return repository.save(customer);
+				})
+				.map(updatedCustomer -> ResponseEntity.ok(updatedCustomer))
+				.defaultIfEmpty(ResponseEntity.badRequest().build());
 	}
+
 
 	@Override
-	public Mono<Customer> listById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Mono<ResponseEntity<Void>> delete(String id) {
+		return repository.findById(id)
+				.flatMap(customer -> repository.delete(customer).then(Mono.just(ResponseEntity.ok().build())));
 	}
 
-	@Override
-	public Mono<Void> delete(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-	
 }
