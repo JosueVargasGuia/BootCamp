@@ -37,10 +37,10 @@ public class CreditServiceImpl implements CreditService {
 	RestTemplate restTemplate;
 
 	@Value("${api.customer-service.uri}")
-	private String customerService  ;
+	private String customerService;
 
 	@Value("${api.product-service.uri}")
-	private String productService  ;
+	private String productService;
 
 	@Value("${api.movementCredit-service.uri}")
 	private String movementCreditService;
@@ -148,18 +148,31 @@ public class CreditServiceImpl implements CreditService {
 
 	}
 
+/*	@Override
+	public Flux<MovementCredit> consultMovements(Long idCredit) {
+		Map<String, Object> hashMap = new HashMap<String, Object>();
+		if (this.findById(idCredit) != null) {
+			hashMap.put("Movements", this.findAllMovements(idCredit));
+			return Flux.empty();
+		} else {
+			hashMap.put("Credit", "La cuenta de credito no exite.");
+			return Flux.empty();
+		}
+	}
+*/
 	@Override
 	public Flux<MovementCredit> consultMovements(Long idCredit) {
-		log.info(movementCreditService);
-		ResponseEntity<List<MovementCredit>> responseGet = restTemplate.exchange(movementCreditService, HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<MovementCredit>>() {
+		ResponseEntity<List<MovementCredit>> responseGet = restTemplate.exchange(movementCreditService, HttpMethod.GET,
+				null, new ParameterizedTypeReference<List<MovementCredit>>() {
 				});
+		List<MovementCredit> list;
 		if (responseGet.getStatusCode() == HttpStatus.OK) {
-			List<MovementCredit> list = responseGet.getBody();
-			return Flux.fromIterable(list).filter(movementCredit->movementCredit.getIdCredit()==idCredit);
+			list = responseGet.getBody();
+			return Flux.fromIterable(list).filter(movementCredit -> movementCredit.getIdCredit() == idCredit);
 		} else {
-			return null;
-		}		 
+			return Flux.empty();
+		}
+
 	}
 
 }

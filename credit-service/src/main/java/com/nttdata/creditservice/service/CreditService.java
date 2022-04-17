@@ -27,7 +27,9 @@ public interface CreditService {
 	Product findByIdProduct(Long idProducto);
 
 	Customer findByIdCustomer(Long idCustomer);
-	
+
+	//Mono<Map<String, Object>> consultMovements(Long idCredit);
+
 	Flux<MovementCredit> consultMovements(Long idCredit);
-	
+
 }
