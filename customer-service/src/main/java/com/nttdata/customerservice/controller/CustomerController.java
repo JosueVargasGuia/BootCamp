@@ -18,18 +18,18 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("api/customer")
+@RequestMapping("/customer")
 public class CustomerController {
 	
 	@Autowired
 	private CustomerService service;
 	
-	@GetMapping("/getAll")
+	@GetMapping
 	public Flux<ResponseEntity<Customer>> listAllCustomers(){
 		return service.getAllCustomers();
 	}
 	
-	@GetMapping("/getOneCustomer/{id}")
+	@GetMapping("/{id}")
 	public Mono<ResponseEntity<Customer>> listOneCustomer(@PathVariable("id") String id){
 		return service.getById(id);
 	}

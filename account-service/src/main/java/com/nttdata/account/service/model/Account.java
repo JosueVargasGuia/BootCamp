@@ -17,8 +17,9 @@ public class Account {
 	
 	@Id
 	private String id;
-	private String idProduct; //typeAccount = typeProduct
+	private Long idProduct; //typeAccount = typeProduct
 	private String idCustomer;
-	private Integer quantityAccount; //limitar la cuenta si es cliente personal
 	//account
+	
+	
 }
