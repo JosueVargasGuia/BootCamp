@@ -94,13 +94,15 @@ public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustom
 
 					if (product.getProductId() == ProductId.CuentaCorriente
 							|| product.getProductId() == ProductId.Empresarial
-							|| product.getProductId() == ProductId.TarjetaCreditoEmpresarial) {						
-						return this.save(signatoriesCustomerAccounts).map(_obj->{
+							|| product.getProductId() == ProductId.TarjetaCreditoEmpresarial) {
+						hasMap.put("SignatoriesCustomerAccounts", "Firma autorisante registrado.");
+						Mono<Map<String, Object>> mono= this.save(signatoriesCustomerAccounts) .map(_obj->{
 							log.info("SignatoriesCustomerAccounts:Firma autorisante registrado.");
-							hasMap.put("SignatoriesCustomerAccounts", "Firma autorisante registrado.");	
+														
 							return hasMap;
 						});
-						
+						//mono.subscribe();
+						 return mono;
 					}else {
 						hasMap.put("SignatoriesCustomerAccounts", "No se puede registrar la firma autorisante en la cuenta");
 						return Mono.just(hasMap);
@@ -109,23 +111,23 @@ public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustom
 				}
 				if (customer.getTypeCustomer() == TypeCustomer.personal) {
 					// Solo un registro
-					return this.findAll()
+					 Mono<Map<String, Object>> mono=this.findAll()
 							.filter(_filter -> _filter.getIdAccount() == signatoriesCustomerAccounts.getIdAccount()
 									&& _filter.getIdCustomer() == signatoriesCustomerAccounts.getIdCustomer())
-							.collect(Collectors.counting()).map(_value -> {
+							.collect(Collectors.counting()).map(_value -> {								 
 								if (_value <= 0) {
 									hasMap.put("SignatoriesCustomerAccounts", "Firma autorisante registrado.");
-									this.save(signatoriesCustomerAccounts).map(_obj->{
-										log.info("SignatoriesCustomerAccounts:Firma autorisante registrado.");
-										hasMap.put("SignatoriesCustomerAccounts", "Firma autorisante registrado.");	
-										return hasMap;
-									}); 
+									log.info("SignatoriesCustomerAccounts:Firma autorisante registrado.");
+									this.save(signatoriesCustomerAccounts).subscribe();									 
 								} else {
+									log.info("SignatoriesCustomerAccounts:Existe  una firma registrada para  el cliente " + customer.getFirstname());
 									hasMap.put("customer",
 											"Existe  una firma registrada para  el cliente " + customer.getFirstname());
 								}
 								return hasMap;
 							});
+					 	//mono.subscribe();					  
+					  return mono;
 
 				}
 				return Mono.just(hasMap);
