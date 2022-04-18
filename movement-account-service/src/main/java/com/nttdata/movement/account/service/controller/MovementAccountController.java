@@ -1,5 +1,8 @@
 package com.nttdata.movement.account.service.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nttdata.movement.account.service.model.MovementAccount;
+import com.nttdata.movement.account.service.entity.MovementAccount;
 import com.nttdata.movement.account.service.service.MovementAccountService;
 
 import reactor.core.publisher.Flux;
@@ -53,7 +56,7 @@ public class MovementAccountController {
 	
 	@PutMapping
 	public Mono<ResponseEntity<MovementAccount>> updateMovementAccount(@RequestBody MovementAccount movementAccount){
-		Mono<MovementAccount> objMovementAccount = service.findById(movementAccount.getId()).flatMap(_movement -> {
+		Mono<MovementAccount> objMovementAccount = service.findById(movementAccount.getIdMovementAccount()).flatMap(_movement -> {
 			logger.info("Update: [new] " + movementAccount + "\n[Old]: " + _movement);
 			return service.update(movementAccount);
 		});
@@ -70,8 +73,19 @@ public class MovementAccountController {
 	@DeleteMapping("/{id}")
 	public Mono<ResponseEntity<Void>> deleteMovementAccount(@PathVariable("id") Long id){
 		return service.findById(id).flatMap(_movement -> {
-			return service.delete(_movement.getId()).then(Mono.just(ResponseEntity.ok().build()));
+			return service.delete(_movement.getIdMovementAccount()).then(Mono.just(ResponseEntity.ok().build()));
 		});
+	}
+	
+	@PostMapping("/recordAccount")
+	public Mono<ResponseEntity<Map<String, Object>>> recordAccount(@RequestBody MovementAccount movementAccount) {
+		return service.recordsMovement(movementAccount).map(obj -> ResponseEntity.ok().body(obj))
+				.onErrorResume(e -> {
+					logger.info("Status: " + HttpStatus.BAD_REQUEST + "\nMessage: " + e.getMessage());
+					Map<String, Object> hashMap = new HashMap<>();
+					hashMap.put("Error: ", e.getMessage());
+					return Mono.just(ResponseEntity.badRequest().body(hashMap));
+				}).defaultIfEmpty(ResponseEntity.noContent().build());
 	}
 
 }

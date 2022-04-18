@@ -1,7 +1,4 @@
-package com.nttdata.account.service.entity;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+package com.nttdata.movement.account.service.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,14 +9,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "accounts")
 public class Account {
 	
-	@Id
 	private Long id;
 	private Long idProduct;
 	private Long idCustomer;
 	private Double amount;
 	
-	
+	@Override
+	public String toString() {
+		return "Account [id=" + id + ", idProduct=" + idProduct + ", idCustomer=" + idCustomer + ", amount=" + amount
+				+ "]";
+	}
 }
