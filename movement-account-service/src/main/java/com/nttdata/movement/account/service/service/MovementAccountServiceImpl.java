@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -125,7 +124,28 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 	@Override
 	public Mono<Map<String, Object>> balanceInquiry(Account account) {
 		// metodo para la consulta de saldo en la cuenta
-		return null;
+		Map<String, Object> hashMap = new HashMap<String, Object>();
+		Account _account = this.findByIdAccount(account.getId());
+		if(_account!=null) { //act obj MovementAccount
+		return this.findAll().filter(act -> (act.getIdAccount() == _account.getId())).map(mov -> {
+			if (mov.getTypeMovementAccount() == TypeMovementAccount.withdrawal) {
+				mov.setAmount(-1*mov.getAmount());
+			}
+			return mov;
+		}).collect(Collectors.summingDouble(MovementAccount::getAmount)).map(_value -> {
+			logger.info("Consulta de saldo: "+_value);
+			return _value;
+		}).map(value->{
+			hashMap.put("Status Consulta de saldo:","El saldo de la cuenta es de:" + value);
+			//hashMap.put("creditBalance", value);
+			logger.info("Account", account);
+		return hashMap;
+		}
+				);	
+		}else {
+			hashMap.put("Message account", "Cuenta no existe.");
+			return Mono.just(hashMap);
+		}
 	}
 
 }

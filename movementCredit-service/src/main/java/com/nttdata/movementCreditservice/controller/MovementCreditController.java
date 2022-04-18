@@ -82,6 +82,7 @@ public class MovementCreditController {
 		});
 	}
 
+	//registro de movimientos de cuenta
 	@PostMapping("/recordsMovement")
 	public Mono<ResponseEntity<Map<String, Object>>> recordsMovement(@RequestBody MovementCredit movementCredit) {
 		return movementCreditService.recordsMovement(movementCredit).map(_val -> ResponseEntity.ok().body(_val))

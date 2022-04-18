@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nttdata.movement.account.service.entity.MovementAccount;
+import com.nttdata.movement.account.service.model.Account;
 import com.nttdata.movement.account.service.service.MovementAccountService;
 
 import reactor.core.publisher.Flux;
@@ -82,6 +83,17 @@ public class MovementAccountController {
 		return service.recordsMovement(movementAccount).map(obj -> ResponseEntity.ok().body(obj))
 				.onErrorResume(e -> {
 					logger.info("Status: " + HttpStatus.BAD_REQUEST + "\nMessage: " + e.getMessage());
+					Map<String, Object> hashMap = new HashMap<>();
+					hashMap.put("Error: ", e.getMessage());
+					return Mono.just(ResponseEntity.badRequest().body(hashMap));
+				}).defaultIfEmpty(ResponseEntity.noContent().build());
+	}
+	
+	@PostMapping("/balanceInquiry")
+	public Mono<ResponseEntity<Map<String, Object>>> balanceInquiry(@RequestBody  Account account) {
+		return service.balanceInquiry(account).map(act -> ResponseEntity.ok().body(act))
+				.onErrorResume(e -> {
+					logger.info("Status: " + HttpStatus.BAD_REQUEST + " Message: " + e.getMessage());
 					Map<String, Object> hashMap = new HashMap<>();
 					hashMap.put("Error: ", e.getMessage());
 					return Mono.just(ResponseEntity.badRequest().body(hashMap));
