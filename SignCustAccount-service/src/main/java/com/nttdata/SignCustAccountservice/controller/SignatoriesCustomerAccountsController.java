@@ -1,5 +1,8 @@
 package com.nttdata.SignCustAccountservice.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +77,17 @@ public class SignatoriesCustomerAccountsController {
 		return accountsService.findById(idSignCustAccount).flatMap(producto -> {
 			return accountsService.delete(producto.getIdSignCustAccount()).then(Mono.just(ResponseEntity.ok().build()));
 		});
+	}
+
+	@PostMapping("/registerSignature")
+	public Mono<ResponseEntity<Map<String, Object>>> registerSignature(
+			@RequestBody SignatoriesCustomerAccounts customerAccounts) {
+		return accountsService.registerSignature(customerAccounts).map(_val -> ResponseEntity.ok().body(_val))
+				.onErrorResume(e -> {
+					log.info("Status:" + HttpStatus.BAD_REQUEST + " menssage" + e.getMessage());
+					Map<String, Object> hashMap = new HashMap<>();
+					hashMap.put("Error", e.getMessage());
+					return Mono.just(ResponseEntity.badRequest().body(hashMap));
+				}).defaultIfEmpty(ResponseEntity.noContent().build());
 	}
 }

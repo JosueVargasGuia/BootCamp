@@ -32,7 +32,7 @@ import reactor.core.publisher.Mono;
 public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustomerAccountsService {
 	Logger log = LoggerFactory.getLogger(SignatoriesCustomerAccountsServiceImpl.class);
 
-	@Value("${api.account-service.ur}")
+	@Value("${api.account-service.uri}")
 	private String accountService;
 
 	@Value("${api.product-service.uri}")
