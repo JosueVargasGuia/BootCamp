@@ -19,7 +19,7 @@ public interface AccountService {
 	Mono<Account> findById(Long id);
 	Mono<Void> delete(Long id);
 	
-	Map<String, Object> registerAccount(Account account);
+	 Mono<Map<String, Object>> registerAccount(Account account);
 	
 	Product findProduct(Long id);
 	Customer findCustomer(Long id);

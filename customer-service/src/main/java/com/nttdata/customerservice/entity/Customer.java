@@ -1,4 +1,4 @@
-package com.nttdata.customerservice.model;
+package com.nttdata.customerservice.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

@@ -1,4 +1,4 @@
-package com.nttdata.customerservice.model;
+package com.nttdata.customerservice.entity;
 
 public enum TypeCustomer {
 	personal, company

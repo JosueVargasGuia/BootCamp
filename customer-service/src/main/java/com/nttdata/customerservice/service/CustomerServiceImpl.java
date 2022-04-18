@@ -3,7 +3,7 @@ package com.nttdata.customerservice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nttdata.customerservice.model.Customer;
+import com.nttdata.customerservice.entity.Customer;
 import com.nttdata.customerservice.repository.CustomerRepository;
 
 import reactor.core.publisher.Flux;
