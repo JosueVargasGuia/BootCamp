@@ -2,6 +2,7 @@ package com.nttdata.SignCustAccountservice.serviceImpl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -75,6 +76,7 @@ public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustom
 	@Override
 	public Mono<Void> delete(Long idSignatoriesCustomerAccounts) {
 		// TODO Auto-generated method stub
+		
 		return accountsRepository.deleteById(idSignatoriesCustomerAccounts);
 	}
 
@@ -172,9 +174,11 @@ public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustom
 	@Override
 	public Account findIdCredit(Long idCredit) {
 		log.info(accountService + "/" + idCredit);
-		ResponseEntity<Account> responseGet = restTemplate.exchange(accountService + "/" + idCredit, HttpMethod.GET,
+		ResponseEntity<Account> responseGet = restTemplate
+				.exchange(accountService + "/" + idCredit, HttpMethod.GET,
 				null, new ParameterizedTypeReference<Account>() {
 				});
+		
 		if (responseGet.getStatusCode() == HttpStatus.OK) {
 			return responseGet.getBody();
 		} else {

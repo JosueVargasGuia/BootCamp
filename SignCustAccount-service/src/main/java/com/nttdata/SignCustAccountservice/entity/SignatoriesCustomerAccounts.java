@@ -19,4 +19,10 @@ public class SignatoriesCustomerAccounts {
 	Long idSignCustAccount;
 	Long idCustomer;
 	Long idAccount;
+	@Override
+	public String toString() {
+		return "SignatoriesCustomerAccounts [idSignCustAccount=" + idSignCustAccount + ", idCustomer=" + idCustomer
+				+ ", idAccount=" + idAccount + "]";
+	}
+	
 }

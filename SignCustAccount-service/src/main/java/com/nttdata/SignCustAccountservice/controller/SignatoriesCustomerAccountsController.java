@@ -1,7 +1,10 @@
 package com.nttdata.SignCustAccountservice.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +33,28 @@ public class SignatoriesCustomerAccountsController {
 	SignatoriesCustomerAccountsService accountsService;
 
 	@GetMapping
-	public Flux<SignatoriesCustomerAccounts> findAll() {
+	public Flux<SignatoriesCustomerAccounts> findAll() throws InterruptedException, ExecutionException {
+	
 		return accountsService.findAll();
 	}
+	//accountsService.findAll().toStream().map(obj->{return obj;}).collect(Collectors.toList()).forEach(c->log.info(c.toString()));
+
+	/*Flux<SignatoriesCustomerAccounts> flux= accountsService.findAll();
+	flux.flatMap(obj->{
+		return Mono.just(obj);
+	});
+	
+	List<SignatoriesCustomerAccounts> list2=accountsService.findAll().
+	collectList().toFuture().get();
+	list2.forEach(e->log.info("list2:"+e.toString()));
+	
+	flux.subscribe(e->log.info("e:"+e.toString()));
+	
+	Mono<List<SignatoriesCustomerAccounts>> mono=flux.collectList();
+	mono.subscribe(e->log.info("e1:"+e.toString()));
+	
+	List<SignatoriesCustomerAccounts> list=mono.toFuture().get();
+	list.forEach(e->log.info("message:"+e.toString()));*/
 
 	@PostMapping
 	public Mono<ResponseEntity<SignatoriesCustomerAccounts>> save(
