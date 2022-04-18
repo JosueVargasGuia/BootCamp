@@ -1,5 +1,7 @@
 package com.nttdata.customerservice.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,41 +15,50 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nttdata.customerservice.model.Customer;
 import com.nttdata.customerservice.service.CustomerService;
-
+ 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
-	
+	Logger log = LoggerFactory.getLogger(CustomerController.class);
 	@Autowired
 	private CustomerService service;
-	
+
 	@GetMapping
-	public Flux<ResponseEntity<Customer>> listAllCustomers(){
+	public Flux<Customer> listAllCustomers() {
 		return service.getAllCustomers();
 	}
-	
+
 	@GetMapping("/{id}")
-	public Mono<ResponseEntity<Customer>> listOneCustomer(@PathVariable("id") String id){
-		return service.getById(id);
+	public Mono<ResponseEntity<Customer>> listOneCustomer(@PathVariable("id") String id) {
+		return service.getById(id).map(customer -> ResponseEntity.ok(customer))
+				.defaultIfEmpty(ResponseEntity.noContent().build());
 	}
-	
-	@PostMapping("/save")
-	public Mono<ResponseEntity<Customer>> saveCustomer(@RequestBody Customer customer){
-		return service.saveCustomer(customer);
+
+	@PostMapping()
+	public Mono<ResponseEntity<Customer>> saveCustomer(@RequestBody Customer customer) {
+		return service.saveCustomer(customer).map(savedCustomer -> ResponseEntity.ok(savedCustomer)).onErrorResume(e -> {
+			log.info("Error:" + e.getMessage());
+			return Mono.just(ResponseEntity.badRequest().build());
+		}); 
 	}
-	
-	@PutMapping("/update/{id}")
-	public Mono<ResponseEntity<Customer>> updateCustomer(@PathVariable("id") String id,@RequestBody Customer customer){
-		return service.saveCustomer(customer);
+
+	@PutMapping()
+	public Mono<ResponseEntity<Customer>> updateCustomer(
+			@RequestBody Customer customer) {
+		return service.updateCustomer(customer).map(updatedCustomer -> ResponseEntity.ok(updatedCustomer))
+				.onErrorResume(e -> {
+					log.info(e.getMessage());
+					return Mono.just(ResponseEntity.badRequest().build());
+				})
+				.defaultIfEmpty(ResponseEntity.noContent().build());
 	}
-	
-	@DeleteMapping("/delete/{id}")
-	public Mono<ResponseEntity<Void>> deleteCustomer(@PathVariable("id") String id){
-		return service.delete(id);
+
+	@DeleteMapping("/{id}")
+	public Mono<ResponseEntity<Void>> deleteCustomer(@PathVariable("id") String id) {
+		return service.delete(id).then(Mono.just(ResponseEntity.ok().build()));
 	}
-	
 
 }

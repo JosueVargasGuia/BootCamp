@@ -17,24 +17,24 @@ public class CustomerServiceImpl implements CustomerService {
 	CustomerRepository repository;
 
 	@Override
-	public Flux<ResponseEntity<Customer>> getAllCustomers() {
-		return repository.findAll().map(customer -> ResponseEntity.ok(customer));
+	public Flux<Customer> getAllCustomers() {
+		//return repository.findAll().map(customer -> ResponseEntity.ok(customer));
+		return repository.findAll().sort((objA,objB)->objA.getId().compareTo(objA.getId()));
 	}
 	
 	@Override
-	public Mono<ResponseEntity<Customer>> getById(String id) {
+	public Mono<Customer> getById(String id) {
 		return repository.findById(id)
-				.map(customer -> ResponseEntity.ok(customer))
-				.defaultIfEmpty(ResponseEntity.notFound().build());
+				;
 	}
 
 	@Override
-	public Mono<ResponseEntity<Customer>> saveCustomer(Customer customer) {
-		return repository.save(customer).map(savedCustomer -> ResponseEntity.ok(savedCustomer));
+	public Mono<Customer> saveCustomer(Customer customer) {
+		return repository.insert(customer);
 	}
 
 	@Override
-	public Mono<ResponseEntity<Customer>> updateCustomer(Customer customer) {
+	public Mono<Customer> updateCustomer(Customer customer) {
 
 		return repository.findById(customer.getId())
 				.flatMap(currentCustomer -> {
@@ -47,16 +47,14 @@ public class CustomerServiceImpl implements CustomerService {
 					customer.setHomeAddress(currentCustomer.getHomeAddress());
 					customer.setPhoneNumber(currentCustomer.getPhoneNumber());
 					return repository.save(customer);
-				})
-				.map(updatedCustomer -> ResponseEntity.ok(updatedCustomer))
-				.defaultIfEmpty(ResponseEntity.badRequest().build());
+				});
 	}
 
 
 	@Override
-	public Mono<ResponseEntity<Void>> delete(String id) {
+	public Mono<Void> delete(String id) {
 		return repository.findById(id)
-				.flatMap(customer -> repository.delete(customer).then(Mono.just(ResponseEntity.ok().build())));
+				.flatMap(customer -> repository.delete(customer));
 	}
 
 }
