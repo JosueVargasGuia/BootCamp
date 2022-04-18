@@ -14,6 +14,7 @@ import lombok.Setter;
 public class Product {
 	@Id
 	private Long idProducto;
+	private ProductId productId;
 	private String descriptionProducto;
 	private TypeProduct typeProduct;
 	private Long idConfiguration;
