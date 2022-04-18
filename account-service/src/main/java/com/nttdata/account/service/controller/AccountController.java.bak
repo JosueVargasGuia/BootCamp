@@ -35,9 +35,13 @@ public class AccountController {
 	private AccountService service;
 	
 	@GetMapping
+<<<<<<< HEAD
+	public Flux<Account> listAllAccounts(){
+		return service.getAllAccounts();
+=======
 	public Flux<Account> findAll(){
 		return service.findAll();
-
+>>>>>>> main
 	}
 	
 	@GetMapping("/{id}")

@@ -15,7 +15,7 @@ import lombok.Setter;
 public class Customer {
 	
 	@Id
-	private String id;
+	private Long id;
 	private String firstname;
 	private String lastname;
 	private String documentNumber;

@@ -18,11 +18,10 @@ public class Product {
 	private String descriptionProducto;
 	private TypeProduct typeProduct;
 	private Long idConfiguration;
-
+	
 	@Override
 	public String toString() {
-		return "Product [idProducto=" + idProducto + ", descriptionProducto=" + descriptionProducto + ", typeProduct="
-				+ typeProduct + ", idConfiguration=" + idConfiguration + "]";
+		return "Product [idProducto=" + idProducto + ", productId=" + productId + ", descriptionProducto="
+				+ descriptionProducto + ", typeProduct=" + typeProduct + ", idConfiguration=" + idConfiguration + "]";
 	}
-
 }

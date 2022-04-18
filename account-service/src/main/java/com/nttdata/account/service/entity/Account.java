@@ -1,6 +1,4 @@
-package com.nttdata.movement.account.service.model;
-
-import java.time.LocalDate;
+package com.nttdata.account.service.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,13 +12,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection="movements_accounts")
-public class MovementAccount {
+@Document(collection = "accounts")
+public class Account {
 	
 	@Id
-	private String id;
-	private LocalDate date;
+	private Long id;
+	private Long idProduct;
+	private Long idCustomer;
 	private Double amount;
-	private String typeMovement;
-
+	
+	
 }
