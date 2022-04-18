@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nttdata.account.service.entity.Account;
 import com.nttdata.account.service.model.Customer;
+import com.nttdata.account.service.model.MovementAccount;
 import com.nttdata.account.service.model.Product;
 import com.nttdata.account.service.service.AccountService;
 
@@ -85,6 +86,12 @@ public class AccountController {
 					System.out.println("Error:" + e.getMessage());
 					return Mono.just(ResponseEntity.badRequest().build());
 				}).defaultIfEmpty(ResponseEntity.noContent().build());
+	}
+	
+	
+	@GetMapping("/consultMovementsAccount/{idAccount}")
+	public Flux<MovementAccount> consultMovementsAccount(@PathVariable("idAccount") Long idAccount) {
+		return service.consultMovementsAccount(idAccount);
 	}
 	
 	

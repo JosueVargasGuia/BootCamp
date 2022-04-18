@@ -1,6 +1,7 @@
 package com.nttdata.account.service.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.nttdata.account.service.entity.Account;
 import com.nttdata.account.service.model.Customer;
+import com.nttdata.account.service.model.MovementAccount;
 import com.nttdata.account.service.model.Product;
 import com.nttdata.account.service.model.ProductId;
 import com.nttdata.account.service.model.TypeCustomer;
@@ -42,6 +44,8 @@ public class AccountServiceImpl implements AccountService {
 
 	// @Value("${api.product-service.uri}")
 	private String productService = "http://localhost:8083/product";
+	
+	private String movementAccountService = "http://localhost:8088/movement-account";
 
 	@Override
 	public Flux<Account> findAll() {
@@ -131,6 +135,20 @@ public class AccountServiceImpl implements AccountService {
 			return response.getBody();
 		} else {
 			return null;
+		}
+	}
+
+	@Override
+	public Flux<MovementAccount> consultMovementsAccount(Long idAccount) {
+		//consulta de movimientos de la cuenta
+		ResponseEntity<List<MovementAccount>> response = restTemplate.exchange(movementAccountService, HttpMethod.GET,
+				null, new ParameterizedTypeReference<List<MovementAccount>>() {});
+		List<MovementAccount> list;
+		if (response.getStatusCode() == HttpStatus.OK) {
+			list = response.getBody();
+			return Flux.fromIterable(list).filter(movementAccount -> movementAccount.getIdAccount() == idAccount);
+		} else {
+			return Flux.empty();
 		}
 	}
 }
