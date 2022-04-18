@@ -29,7 +29,7 @@ public class AccountController {
 	private AccountService service;
 	
 	@GetMapping
-	public Flux<ResponseEntity<Account>> listAllAccounts(){
+	public Flux<Account> listAllAccounts(){
 		return service.getAllAccounts();
 	}
 	

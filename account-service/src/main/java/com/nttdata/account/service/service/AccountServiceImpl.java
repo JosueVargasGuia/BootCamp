@@ -40,8 +40,9 @@ public class AccountServiceImpl implements AccountService {
 	private String productService = "http://localhost:8083/product";
 
 	@Override
-	public Flux<ResponseEntity<Account>> getAllAccounts() {
-		return repository.findAll().map(account -> ResponseEntity.ok(account));
+	public Flux<Account> getAllAccounts() {
+		//return repository.findAll().map(account -> ResponseEntity.ok(account));
+		return repository.findAll().sort((a,b)->a.getId().compareTo(b.getId()));
 	}
 
 	

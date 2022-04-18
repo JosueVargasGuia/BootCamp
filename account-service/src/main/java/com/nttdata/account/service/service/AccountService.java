@@ -13,7 +13,8 @@ import reactor.core.publisher.Mono;
 
 public interface AccountService {
 
-	Flux<ResponseEntity<Account>> getAllAccounts();
+	//Flux<ResponseEntity<Account>> getAllAccounts();
+	Flux<Account> getAllAccounts();
 	Mono<ResponseEntity<Account>> saveAccount(Account account);
 	Mono<ResponseEntity<Account>> updateAccount(Account account);
 	Mono<ResponseEntity<Account>> getById(String id);
