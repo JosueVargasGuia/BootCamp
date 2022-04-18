@@ -44,17 +44,17 @@ public class AccountServiceImpl implements AccountService {
 
 	// @Value("${api.product-service.uri}")
 	private String productService = "http://localhost:8083/product";
-	
+
 	private String movementAccountService = "http://localhost:8088/movement-account";
 
-	@Override
 	public Flux<Account> findAll() {
 		return repository.findAll();
+
 	}
 
 	@Override
 	public Mono<Account> save(Account account) {
-		return repository.save(account);
+		return repository.insert(account);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Map<String, Object> registerAccount(Account account) {
+	public Mono<Map<String, Object>> registerAccount(Account account) {
 		Map<String, Object> hashMap = new HashMap<String, Object>();
 		Product product = findProduct(account.getIdProduct()); // obteniendo producto para luego comparar su tipo
 		Customer customer = findCustomer(account.getIdCustomer()); // obteniendo cliente para luego comparar su tipo
@@ -81,44 +81,75 @@ public class AccountServiceImpl implements AccountService {
 		log.info("Customer: " + customer.getFirstname());
 		log.info("Product: " + product.getDescriptionProducto());
 
-		if (customer.getTypeCustomer() == TypeCustomer.personal) {
-			if (product.getTypeProduct() == TypeProduct.pasivos) {
-				if (product.getProductId() == ProductId.Ahorro) {
-					this.save(account).subscribe(e -> log.info("Message:" + e.toString()));
-					hashMap.put("Account: ", "Cuenta de Ahorro registrada");
-				}
-				if (product.getProductId() == ProductId.CuentaCorriente) {
-					this.save(account).subscribe(e -> log.info("Message:" + e.toString()));
-					hashMap.put("Account: ", "Cuenta corriente registrada");
-				}
-				if (product.getProductId() == ProductId.PlazoFijo) {
-					this.save(account).subscribe(e -> log.info("Message:" + e.toString()));
-					hashMap.put("Account: ", "Cuenta a Plazo fijo registrada");
-				}
-			} else {
-				hashMap.put("Account", "Este servicio es para el registro de cuentas bancarias.");
-			}
+		if (customer.getTypeCustomer() == TypeCustomer.personal 
+				&& product.getTypeProduct() == TypeProduct.pasivos) {
+
+				Mono<Map<String, Object>> mono = this.findAll()
+						.filter(obj -> (obj.getIdCustomer() == account.getIdCustomer()
+								&& obj.getIdProduct() == account.getIdProduct()))
+						.collect(Collectors.counting()).map(e_value -> {
+							log.info("Cantidad:" + e_value);
+							if (e_value <= 0) {
+								if (product.getProductId() == ProductId.Ahorro) {
+									this.save(account).subscribe(e -> log.info("Message:" + e.toString()));
+									hashMap.put("Account: ", "Cuenta de Ahorro registrada");
+								}
+								if (product.getProductId() == ProductId.CuentaCorriente) {
+									this.save(account).subscribe(e -> log.info("Message:" + e.toString()));
+									hashMap.put("Account: ", "Cuenta corriente registrada");
+								}
+								if (product.getProductId() == ProductId.PlazoFijo) {
+									this.save(account).subscribe(e -> log.info("Message:" + e.toString()));
+									hashMap.put("Account: ", "Cuenta a Plazo fijo registrada");
+								}
+							} else {
+								hashMap.put("Account: ", "No se puede registrar una cuenta");
+							}
+							return hashMap;
+						});
+				//mono.subscribe(e_value->log.info("subscribe" + e_value));
+
+				/*
+				 * if (product.getProductId() == ProductId.Ahorro) {
+				 * this.save(account).subscribe(e -> log.info("Message:" + e.toString()));
+				 * hashMap.put("Account: ", "Cuenta de Ahorro registrada"); } if
+				 * (product.getProductId() == ProductId.CuentaCorriente) {
+				 * this.save(account).subscribe(e -> log.info("Message:" + e.toString()));
+				 * hashMap.put("Account: ", "Cuenta corriente registrada"); } if
+				 * (product.getProductId() == ProductId.PlazoFijo) {
+				 * this.save(account).subscribe(e -> log.info("Message:" + e.toString()));
+				 * hashMap.put("Account: ", "Cuenta a Plazo fijo registrada"); } } else {
+				 * hashMap.put("Account",
+				 * "Este servicio es para el registro de cuentas bancarias."); }
+				 */
+				return mono;
+			
 		} else { // si es del tipo empresarial permitir solo multiples cuentas corrientes
 			if (product.getTypeProduct() == TypeProduct.pasivos) {
 				if (product.getProductId() == ProductId.CuentaCorriente) {
 					this.save(account).subscribe(e -> log.info("Message:" + e.toString()));
+					log.info(" Empresarial Cuenta corriente registrada.");
 					hashMap.put("Account: ", "Cuenta corriente registrada.");
 				} else {
+					log.info(" Empresarial No es posible abrir una cuenta de  " + product.getDescriptionProducto());
 					hashMap.put("Account: ", "No es posible abrir una cuenta de " + product.getDescriptionProducto());
 				}
-			}else {
+			} else {
+				log.info(" Empresarial Este servicio es para el registro de cuentas bancarias.");
 				hashMap.put("Account", "Este servicio es para el registro de cuentas bancarias.");
 			}
 		}
-		
-		return hashMap;
+
+		return Mono.just(hashMap);
 	}
 
 	// busqueda de producto por su id
 	@Override
 	public Product findProduct(Long id) {
+		log.info(productService + "/" + id);
 		ResponseEntity<Product> response = restTemplate.exchange(productService + "/" + id, HttpMethod.GET, null,
-				new ParameterizedTypeReference<Product>() {});
+				new ParameterizedTypeReference<Product>() {
+				});
 		if (response.getStatusCode() == HttpStatus.OK) {
 			return response.getBody();
 		} else {
@@ -129,8 +160,10 @@ public class AccountServiceImpl implements AccountService {
 	// busqueda de cliente por id
 	@Override
 	public Customer findCustomer(Long id) {
+		log.info(customerService + "/" + id);
 		ResponseEntity<Customer> response = restTemplate.exchange(customerService + "/" + id, HttpMethod.GET, null,
-				new ParameterizedTypeReference<Customer>() {});
+				new ParameterizedTypeReference<Customer>() {
+				});
 		if (response.getStatusCode() == HttpStatus.OK) {
 			return response.getBody();
 		} else {
@@ -140,9 +173,11 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public Flux<MovementAccount> consultMovementsAccount(Long idAccount) {
-		//consulta de movimientos de la cuenta
+		log.info(movementAccountService + "/" + idAccount);
+		// consulta de movimientos de la cuenta
 		ResponseEntity<List<MovementAccount>> response = restTemplate.exchange(movementAccountService, HttpMethod.GET,
-				null, new ParameterizedTypeReference<List<MovementAccount>>() {});
+				null, new ParameterizedTypeReference<List<MovementAccount>>() {
+				});
 		List<MovementAccount> list;
 		if (response.getStatusCode() == HttpStatus.OK) {
 			list = response.getBody();

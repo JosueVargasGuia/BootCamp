@@ -68,15 +68,12 @@ public class ProductServiceImpl implements ProductService {
 			log.info("Cantidad[X]:" + x);			
 				List<Product> listaProducts = new ArrayList<Product>();
 				listaProducts.add(new Product(Long.valueOf(1),ProductId.Ahorro, "Ahorro", TypeProduct.pasivos, Long.valueOf(1)));
-				listaProducts
-						.add(new Product(Long.valueOf(2), ProductId.CuentaCorriente, "Cuenta corriente", TypeProduct.pasivos, Long.valueOf(2)));
-				listaProducts.add(new Product(Long.valueOf(3), ProductId.PlazoFijo, "Plazo fijo", TypeProduct.pasivos, Long.valueOf(3)));
-				listaProducts.add(new Product(Long.valueOf(4), ProductId.Personal, "Personal", TypeProduct.activos, Long.valueOf(4)));
-				listaProducts.add(new Product(Long.valueOf(5), ProductId.Empresarial, "Empresarial", TypeProduct.activos, Long.valueOf(5)));
-				listaProducts
-						.add(new Product(Long.valueOf(6), ProductId.TarjetaCreditoEmpresarial, "Tarjeta de Crédito Empresarial", TypeProduct.activos, Long.valueOf(6)));
-				listaProducts.add(new Product(Long.valueOf(7), ProductId.TarjetaCreditoPersonal, "Tarjeta de Crédito personal", TypeProduct.activos,
-						Long.valueOf(7)));
+				listaProducts.add(new Product(Long.valueOf(2),ProductId.CuentaCorriente, "Cuenta corriente", TypeProduct.pasivos, Long.valueOf(2)));
+				listaProducts.add(new Product(Long.valueOf(3),ProductId.PlazoFijo, "Plazo fijo", TypeProduct.pasivos, Long.valueOf(3)));
+				listaProducts.add(new Product(Long.valueOf(4),ProductId.Personal, "Personal", TypeProduct.activos, Long.valueOf(4)));
+				listaProducts.add(new Product(Long.valueOf(5),ProductId.Empresarial, "Empresarial", TypeProduct.activos, Long.valueOf(5)));
+				listaProducts.add(new Product(Long.valueOf(6),ProductId.TarjetaCreditoEmpresarial, "Tarjeta de Credito", TypeProduct.activos, Long.valueOf(6)));
+				listaProducts.add(new Product(Long.valueOf(7),ProductId.TarjetaCreditoPersonal, "Tarjeta de Credito personal", TypeProduct.activos,Long.valueOf(7)));
 				log.info("Fill data succefull");				 
 				idProducto=Long.valueOf(x);
 				 return Flux.fromIterable(listaProducts).flatMap(product -> {

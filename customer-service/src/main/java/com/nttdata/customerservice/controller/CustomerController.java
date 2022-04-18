@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nttdata.customerservice.model.Customer;
+import com.nttdata.customerservice.entity.Customer;
 import com.nttdata.customerservice.service.CustomerService;
 
 import reactor.core.publisher.Flux;

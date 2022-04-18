@@ -37,6 +37,7 @@ public class AccountController {
 	@GetMapping
 	public Flux<Account> findAll(){
 		return service.findAll();
+
 	}
 	
 	@GetMapping("/{id}")
@@ -50,7 +51,8 @@ public class AccountController {
 	
 	@PostMapping
 	public Mono<ResponseEntity<Account>> saveAccount(@RequestBody Account account){
-		return service.save(account).map(_account -> ResponseEntity.ok().body(_account)).onErrorResume(e -> {
+		return service.save(account).map(_account -> ResponseEntity.ok().body(_account)).
+				onErrorResume(e -> {
 			log.info("Error:" + e.getMessage());
 			return Mono.just(ResponseEntity.badRequest().build());
 		});
@@ -58,11 +60,11 @@ public class AccountController {
 	
 	@PutMapping
 	public Mono<ResponseEntity<Account>> updateAccount(@RequestBody Account account){
-		Mono<Account> objAccount = service.findById(account.getId()).flatMap(_act -> {
+		Mono<Account> objAccount = service.findById(account.getIdAccount()).flatMap(_act -> {
 			log.info("Update: [new] " + account + " [Old]: " + _act);
 			return service.update(account);
 		});
-
+		//objAccount.subscribe();
 		return objAccount.map(_account -> {
 			log.info("Status: " + HttpStatus.OK);
 			return ResponseEntity.ok().body(_account);
@@ -75,13 +77,14 @@ public class AccountController {
 	@DeleteMapping("/{id}")
 	public Mono<ResponseEntity<Void>> deleteAccount(@PathVariable("id") Long id){
 		return service.findById(id).flatMap(account -> {
-			return service.delete(account.getId()).then(Mono.just(ResponseEntity.ok().build()));
+			return service.delete(account.getIdAccount()).then(Mono.just(ResponseEntity.ok().build()));
 		});
 	}
 	
 	@PostMapping("/registerAccount")
 	public Mono<ResponseEntity<Map<String, Object>>> registerAccount(@RequestBody Account account) {
-		return Mono.just(service.registerAccount(account)).map(_object -> ResponseEntity.ok().body(_object))
+		return service.registerAccount(account).
+				map(_object -> ResponseEntity.ok().body(_object))
 				.onErrorResume(e -> {
 					System.out.println("Error:" + e.getMessage());
 					return Mono.just(ResponseEntity.badRequest().build());

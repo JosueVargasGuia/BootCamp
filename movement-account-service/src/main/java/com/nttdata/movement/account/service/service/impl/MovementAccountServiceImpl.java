@@ -1,4 +1,4 @@
-package com.nttdata.movement.account.service.service;
+package com.nttdata.movement.account.service.service.impl;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -19,6 +19,7 @@ import com.nttdata.movement.account.service.entity.MovementAccount;
 import com.nttdata.movement.account.service.entity.TypeMovementAccount;
 import com.nttdata.movement.account.service.model.Account;
 import com.nttdata.movement.account.service.repository.MovementAccountRepository;
+import com.nttdata.movement.account.service.service.MovementAccountService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -49,7 +50,7 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 
 	@Override
 	public Mono<MovementAccount> save(MovementAccount movementAccount) {
-		return repository.save(movementAccount);
+		return repository.insert(movementAccount);
 	}
 
 	@Override
@@ -73,21 +74,21 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 				return this.findAll()
 						.filter(c -> (c.getIdAccount() == movementAccount.getIdAccount()))
 						.map(mov -> {
+							logger.info("Amount:"+mov.getAmount());
 							if (mov.getTypeMovementAccount() == TypeMovementAccount.withdrawal) {
 								mov.setAmount(-1*mov.getAmount());
 							}
 							return mov;
 						})
-						.collect(Collectors.summingDouble(MovementAccount::getAmount)).map(_saldo -> {
-							
-							if ( movementAccount.getAmount() <= (_saldo +account.getAmount())) { 
+						.collect(Collectors.summingDouble(MovementAccount::getAmount)).map(_saldo -> {							
+							if ( movementAccount.getAmount() <= (_saldo /*+account.getAmount()*/)) { 
 								movementAccount.setDateMovementAccount(Calendar.getInstance().getTime());
 								this.save(movementAccount).subscribe(e->logger.info("Movimiento de retiro registrado: "+e.toString()));
 								hashMap.put("Account success: ", "Registro de movimiento de retiro. Valor retirado: "+ movementAccount.getAmount());
 								logger.info("Saldo disponible: " + (_saldo-movementAccount.getAmount())); 
 							} else {
-								hashMap.put("Message Account", "No cuenta con saldo suficiente para retiro. Saldo disponible: "+(_saldo +account.getAmount()));
-								logger.info("No cuenta con saldo suficiente para retiro."+" Saldo disponible: " +( _saldo +account.getAmount() ));
+								hashMap.put("Message Account", "No cuenta con saldo suficiente para retiro. Saldo disponible: "+(_saldo /*+account.getAmount()*/));
+								logger.info("No cuenta con saldo suficiente para retiro."+" Saldo disponible: " +( _saldo /*+account.getAmount() */));
 							}
 							return hashMap;
 						});
@@ -125,9 +126,9 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 	public Mono<Map<String, Object>> balanceInquiry(Account account) {
 		// metodo para la consulta de saldo en la cuenta
 		Map<String, Object> hashMap = new HashMap<String, Object>();
-		Account _account = this.findByIdAccount(account.getId());
+		Account _account = this.findByIdAccount(account.getIdAccount());
 		if(_account!=null) { //act obj MovementAccount
-		return this.findAll().filter(act -> (act.getIdAccount() == _account.getId())).map(mov -> {
+		return this.findAll().filter(act -> (act.getIdAccount() == _account.getIdAccount())).map(mov -> {
 			if (mov.getTypeMovementAccount() == TypeMovementAccount.withdrawal) {
 				mov.setAmount(-1*mov.getAmount());
 			}
