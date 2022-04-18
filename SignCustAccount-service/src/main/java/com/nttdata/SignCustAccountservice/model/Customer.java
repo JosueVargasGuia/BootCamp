@@ -1,4 +1,4 @@
-package com.nttdata.customerservice.model;
+package com.nttdata.SignCustAccountservice.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,11 +11,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Document(collection="customers")
+ 
 public class Customer {
-	
-	@Id
-	private Long id;
+ 
+	private String id;
 	private String firstname;
 	private String lastname;
 	private String documentNumber;

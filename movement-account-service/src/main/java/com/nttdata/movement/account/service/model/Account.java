@@ -11,14 +11,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Account {
 	
-	private Long id;
+	private Long idAccount;
 	private Long idProduct;
 	private Long idCustomer;
-	private Double amount;
-	
+	//private Double amount;
 	@Override
 	public String toString() {
-		return "Account [id=" + id + ", idProduct=" + idProduct + ", idCustomer=" + idCustomer + ", amount=" + amount
-				+ "]";
+		return "Account [idAccount=" + idAccount + ", idProduct=" + idProduct + ", idCustomer=" + idCustomer + "]";
 	}
+ 
 }

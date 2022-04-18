@@ -16,10 +16,15 @@ import lombok.Setter;
 public class Account {
 	
 	@Id
-	private Long id;
+	private Long idAccount;
 	private Long idProduct;
 	private Long idCustomer;
-	private Double amount;
+	//private Double amount;
+	@Override
+	public String toString() {
+		return "Account [idAccount=" + idAccount + ", idProduct=" + idProduct + ", idCustomer=" + idCustomer + "]";
+	}
+	 
 	
 	
 }
