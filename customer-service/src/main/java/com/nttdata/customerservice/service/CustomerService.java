@@ -1,17 +1,15 @@
 package com.nttdata.customerservice.service;
 
-import org.springframework.http.ResponseEntity;
-
 import com.nttdata.customerservice.model.Customer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface CustomerService {
 	
-	Flux<ResponseEntity<Customer>> getAllCustomers();
-	Mono<ResponseEntity<Customer>> saveCustomer(Customer customer);
-	Mono<ResponseEntity<Customer>> updateCustomer(Customer customer);
-	Mono<ResponseEntity<Customer>> getById(String id);
-	Mono<ResponseEntity<Void>> delete(String id);
+	Flux<Customer> findAll();
+	Mono<Customer> save(Customer customer);
+	Mono<Customer> update(Customer customer);
+	Mono<Customer> findById(Long id);
+	Mono<Void> delete(Long id);
 
 }

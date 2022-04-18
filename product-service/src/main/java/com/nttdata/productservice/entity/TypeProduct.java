@@ -1,8 +1,10 @@
 package com.nttdata.productservice.entity;
 
 public enum TypeProduct {
-	// cuentas bancarias
-	pasivos, cuentaAhorro, cuentaCorriente, plazoFijo,
-	// crÃ©ditos
+
+ //cuentas bancarias
+	pasivos,
+	//créditos
 	activos;
+	
 }

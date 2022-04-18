@@ -18,9 +18,9 @@ import lombok.Setter;
 public class MovementAccount {
 	
 	@Id
-	private String id;
+	private Long id;
 	private LocalDate date;
 	private Double amount;
-	private String typeMovement;
+	private TypeMovement typeMovement;
 
 }

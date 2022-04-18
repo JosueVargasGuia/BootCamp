@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Customer {
-	private String id;
+	private Long id;
 	private String firstname;
 	private String lastname;
 	private String documentNumber;

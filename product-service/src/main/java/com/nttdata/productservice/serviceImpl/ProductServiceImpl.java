@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
  
 import com.nttdata.productservice.entity.Product;
+import com.nttdata.productservice.entity.ProductId;
 import com.nttdata.productservice.entity.TypeProduct;
 import com.nttdata.productservice.repository.ProductRepository;
 import com.nttdata.productservice.service.ProductService;
@@ -66,15 +67,15 @@ public class ProductServiceImpl implements ProductService {
 		return productRepository.findAll().count().flatMap(x -> {
 			log.info("Cantidad[X]:" + x);			
 				List<Product> listaProducts = new ArrayList<Product>();
-				listaProducts.add(new Product(Long.valueOf(1), "Ahorro", TypeProduct.pasivos, Long.valueOf(1)));
+				listaProducts.add(new Product(Long.valueOf(1),ProductId.Ahorro, "Ahorro", TypeProduct.pasivos, Long.valueOf(1)));
 				listaProducts
-						.add(new Product(Long.valueOf(2), "Cuenta corriente", TypeProduct.pasivos, Long.valueOf(2)));
-				listaProducts.add(new Product(Long.valueOf(3), "Plazo fijo", TypeProduct.pasivos, Long.valueOf(3)));
-				listaProducts.add(new Product(Long.valueOf(4), "Personal", TypeProduct.activos, Long.valueOf(4)));
-				listaProducts.add(new Product(Long.valueOf(5), "Empresarial", TypeProduct.activos, Long.valueOf(5)));
+						.add(new Product(Long.valueOf(2), ProductId.CuentaCorriente, "Cuenta corriente", TypeProduct.pasivos, Long.valueOf(2)));
+				listaProducts.add(new Product(Long.valueOf(3), ProductId.PlazoFijo, "Plazo fijo", TypeProduct.pasivos, Long.valueOf(3)));
+				listaProducts.add(new Product(Long.valueOf(4), ProductId.Personal, "Personal", TypeProduct.activos, Long.valueOf(4)));
+				listaProducts.add(new Product(Long.valueOf(5), ProductId.Empresarial, "Empresarial", TypeProduct.activos, Long.valueOf(5)));
 				listaProducts
-						.add(new Product(Long.valueOf(6), "Tarjeta de Crédito", TypeProduct.activos, Long.valueOf(6)));
-				listaProducts.add(new Product(Long.valueOf(7), "Tarjeta de Crédito personal", TypeProduct.activos,
+						.add(new Product(Long.valueOf(6), ProductId.TarjetaCreditoEmpresarial, "Tarjeta de Crédito Empresarial", TypeProduct.activos, Long.valueOf(6)));
+				listaProducts.add(new Product(Long.valueOf(7), ProductId.TarjetaCreditoPersonal, "Tarjeta de Crédito personal", TypeProduct.activos,
 						Long.valueOf(7)));
 				log.info("Fill data succefull");				 
 				idProducto=Long.valueOf(x);

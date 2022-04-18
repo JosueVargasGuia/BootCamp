@@ -2,9 +2,7 @@ package com.nttdata.account.service.service;
 
 import java.util.Map;
 
-import org.springframework.http.ResponseEntity;
-
-import com.nttdata.account.service.model.Account;
+import com.nttdata.account.service.entity.Account;
 import com.nttdata.account.service.model.Customer;
 import com.nttdata.account.service.model.Product;
 
@@ -13,14 +11,15 @@ import reactor.core.publisher.Mono;
 
 public interface AccountService {
 
-	Flux<ResponseEntity<Account>> getAllAccounts();
-	Mono<ResponseEntity<Account>> saveAccount(Account account);
-	Mono<ResponseEntity<Account>> updateAccount(Account account);
-	Mono<ResponseEntity<Account>> getById(String id);
-	Mono<ResponseEntity<Void>> delete(String id);
+	Flux<Account> findAll();
+	Mono<Account> save(Account account);
+	Mono<Account> update(Account account);
+	Mono<Account> findById(Long id);
+	Mono<Void> delete(Long id);
 	
 	Map<String, Object> registerAccount(Account account);
 	
 	Product findProduct(Long id);
-	Customer findCustomer(String id);
+	Customer findCustomer(Long id);
+	
 }

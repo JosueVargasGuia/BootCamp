@@ -1,7 +1,6 @@
 package com.nttdata.customerservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.nttdata.customerservice.model.Customer;
@@ -17,46 +16,28 @@ public class CustomerServiceImpl implements CustomerService {
 	CustomerRepository repository;
 
 	@Override
-	public Flux<ResponseEntity<Customer>> getAllCustomers() {
-		return repository.findAll().map(customer -> ResponseEntity.ok(customer));
+	public Flux<Customer> findAll() {
+		return repository.findAll();
 	}
 	
 	@Override
-	public Mono<ResponseEntity<Customer>> getById(String id) {
-		return repository.findById(id)
-				.map(customer -> ResponseEntity.ok(customer))
-				.defaultIfEmpty(ResponseEntity.notFound().build());
+	public Mono<Customer> findById(Long id) {
+		return repository.findById(id);
 	}
 
 	@Override
-	public Mono<ResponseEntity<Customer>> saveCustomer(Customer customer) {
-		return repository.save(customer).map(savedCustomer -> ResponseEntity.ok(savedCustomer));
+	public Mono<Customer> save(Customer customer) {
+		return repository.save(customer);
 	}
 
 	@Override
-	public Mono<ResponseEntity<Customer>> updateCustomer(Customer customer) {
-
-		return repository.findById(customer.getId())
-				.flatMap(currentCustomer -> {
-					customer.setFirstname(currentCustomer.getFirstname());
-					customer.setLastname(currentCustomer.getLastname());
-					customer.setDocumentNumber(currentCustomer.getDocumentNumber());
-					customer.setTypeDocument(currentCustomer.getTypeDocument());
-					customer.setTypeCustomer(currentCustomer.getTypeCustomer());
-					customer.setEmailAddress(currentCustomer.getEmailAddress());
-					customer.setHomeAddress(currentCustomer.getHomeAddress());
-					customer.setPhoneNumber(currentCustomer.getPhoneNumber());
-					return repository.save(customer);
-				})
-				.map(updatedCustomer -> ResponseEntity.ok(updatedCustomer))
-				.defaultIfEmpty(ResponseEntity.badRequest().build());
+	public Mono<Customer> update(Customer customer) {
+		return repository.save(customer);
 	}
 
-
 	@Override
-	public Mono<ResponseEntity<Void>> delete(String id) {
-		return repository.findById(id)
-				.flatMap(customer -> repository.delete(customer).then(Mono.just(ResponseEntity.ok().build())));
+	public Mono<Void> delete(Long id) {
+		return repository.deleteById(id);
 	}
 
 }
