@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -36,8 +35,8 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 	@Autowired
 	RestTemplate restTemplate;
 
-	@Value("${api.account-service.uri}")
-	private String accountService ;//"http://localhost:8086/account";
+	// @Value("${api.credit-service.uri}")
+	private String accountService = "http://localhost:8086/account";
 
 	@Override
 	public Flux<MovementAccount> findAll() {

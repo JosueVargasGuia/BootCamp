@@ -44,7 +44,7 @@ public class AccountController {
 	public Mono<ResponseEntity<Account>> findById(@PathVariable("id") Long id){
 		return service.findById(id).map(_account -> ResponseEntity.ok().body(_account))
 				.onErrorResume(e -> {
-					log.info("Error:" + e.getMessage());
+					log.error("Error: " + e.getMessage());
 					return Mono.just(ResponseEntity.badRequest().build());
 				}).defaultIfEmpty(ResponseEntity.noContent().build());
 	}
@@ -86,7 +86,7 @@ public class AccountController {
 		return service.registerAccount(account).
 				map(_object -> ResponseEntity.ok().body(_object))
 				.onErrorResume(e -> {
-					System.out.println("Error:" + e.getMessage());
+					log.error("Error:" + e.getMessage());
 					return Mono.just(ResponseEntity.badRequest().build());
 				}).defaultIfEmpty(ResponseEntity.noContent().build());
 	}
