@@ -7,8 +7,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
- 
+import org.springframework.web.client.RestTemplate;
+
 import com.nttdata.productservice.entity.Product;
 import com.nttdata.productservice.entity.ProductId;
 import com.nttdata.productservice.entity.TypeProduct;
@@ -23,7 +29,10 @@ public class ProductServiceImpl implements ProductService {
 	Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
 	@Autowired
 	ProductRepository productRepository;
-
+@Autowired
+RestTemplate restTemplate;
+	@Value("${api.tableId-service.uri}")
+	String tableIdService;
 	@Override
 	public Flux<Product> findAll() {
 		return productRepository.findAll()
@@ -38,6 +47,11 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Mono<Product> save(Product product) {
+		Long key=generateKey(Product.class.getSimpleName());
+		if(key>=1) {
+			product.setIdProducto(key);
+			log.info("SAVE[product]:"+product.toString());
+		}
 		return productRepository.insert(product);
 	}
 
@@ -85,4 +99,17 @@ public class ProductServiceImpl implements ProductService {
 		}).then();		 
 	}
 
+	@Override
+	public Long generateKey(String nameTable) {
+		log.info(tableIdService + "/generateKey/" + nameTable);
+		ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/generateKey/" + nameTable, HttpMethod.GET,
+				null, new ParameterizedTypeReference<Long>() {
+				});
+		if (responseGet.getStatusCode() == HttpStatus.OK) {
+			log.info("Body:"+ responseGet.getBody());
+			return responseGet.getBody();
+		} else {
+			return Long.valueOf(0);
+		}
+	}
 }
