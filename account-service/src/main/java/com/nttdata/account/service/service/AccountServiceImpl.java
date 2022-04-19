@@ -39,15 +39,16 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	RestTemplate restTemplate;
 
-	//@Value("${api.customer-service.uri}")
-	private String customerService="http://localhost:8087/customer";
+	@Value("${api.customer-service.uri}")
+	private String customerService;//="http://localhost:8087/customer";
 
-	//@Value("${api.product-service.uri}")
-	private String productService="http://localhost:8083/product";
+	@Value("${api.product-service.uri}")
+	private String productService;//="http://localhost:8083/product";
 
-	//@Value("${api.movement-account-service.uri}")
-	private String movementAccountService="http://localhost:8088/movement-account";
-
+	@Value("${api.movement-account-service.uri}")
+	private String movementAccountService;//="http://localhost:8088/movement-account";
+	@Value("${api.tableId-service.uri}")
+	String tableIdService;
 	public Flux<Account> findAll() {
 		return repository.findAll();
 
@@ -55,6 +56,11 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public Mono<Account> save(Account account) {
+		Long key=generateKey(Account.class.getSimpleName());
+		if(key>=1) {
+			account.setIdAccount(key);
+			//log.info("SAVE[product]:"+account.toString());
+		}
 		return repository.insert(account);
 	}
 
@@ -170,6 +176,19 @@ public class AccountServiceImpl implements AccountService {
 			return Flux.fromIterable(list).filter(movementAccount -> movementAccount.getIdAccount() == idAccount);
 		} else {
 			return Flux.empty();
+		}
+	}
+	@Override
+	public Long generateKey(String nameTable) {
+		log.info(tableIdService + "/generateKey/" + nameTable);
+		ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/generateKey/" + nameTable, HttpMethod.GET,
+				null, new ParameterizedTypeReference<Long>() {
+				});
+		if (responseGet.getStatusCode() == HttpStatus.OK) {
+			log.info("Body:"+ responseGet.getBody());
+			return responseGet.getBody();
+		} else {
+			return Long.valueOf(0);
 		}
 	}
 }
