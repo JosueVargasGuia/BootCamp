@@ -1,0 +1,175 @@
+{
+	"info": {
+		"_postman_id": "4fe88427-a3b7-44ed-ab7c-bee10fd21678",
+		"name": "movement-account",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8088/movement-account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8088/movement-account",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"movement-account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8088/movement-account/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8088/movement-account/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"movement-account",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8088/movement-account/1",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8088/movement-account/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"movement-account",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8088/movement-account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"idMovementAccount\":15,\r\n\"amount\":20.00,\r\n\"dateMovementAccount\":\"2020-06-12\",\r\n\"typeMovementAccount\":\"deposit\",\r\n\"idAccount\":2\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8088/movement-account",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"movement-account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8088/movement-account/recordAccount",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"idMovementAccount\":14,\r\n\"amount\":80.00,\r\n\"dateMovementAccount\":\"2020-06-12\",\r\n\"typeMovementAccount\":\"deposit\",\r\n\"idAccount\":1\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8088/movement-account/recordAccount",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"movement-account",
+						"recordAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8088/movement-account/balanceInquiry",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idAccount\": 1,\r\n    \"idProduct\": 2,\r\n    \"idCustomer\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8088/movement-account/balanceInquiry",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"movement-account",
+						"balanceInquiry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8088/movement-account",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"idMovementAccount\":1,\r\n\"amount\":20.00,\r\n\"dateMovementAccount\":\"2020-06-12\",\r\n\"typeMovementAccount\":\"deposit\",\r\n\"idAccount\":1\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8088/movement-account",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"movement-account"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
