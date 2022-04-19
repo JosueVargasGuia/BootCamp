@@ -1,4 +1,4 @@
-server.port=8090
+server.port=8089
 spring.data.mongodb.database=bank
 spring.data.mongodb.host=localhost
 spring.data.mongodb.port=27017
