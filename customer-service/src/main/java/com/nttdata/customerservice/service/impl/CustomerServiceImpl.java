@@ -1,10 +1,11 @@
-package com.nttdata.customerservice.service;
+package com.nttdata.customerservice.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nttdata.customerservice.entity.Customer;
 import com.nttdata.customerservice.repository.CustomerRepository;
+import com.nttdata.customerservice.service.CustomerService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

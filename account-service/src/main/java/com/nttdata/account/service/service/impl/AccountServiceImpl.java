@@ -1,4 +1,4 @@
-package com.nttdata.account.service.service;
+package com.nttdata.account.service.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +24,7 @@ import com.nttdata.account.service.model.ProductId;
 import com.nttdata.account.service.model.TypeCustomer;
 import com.nttdata.account.service.model.TypeProduct;
 import com.nttdata.account.service.repository.AccountRepository;
+import com.nttdata.account.service.service.AccountService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -39,13 +40,14 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	RestTemplate restTemplate;
 
-	// @Value("${api.customer-service.uri}")
-	private String customerService = "http://localhost:8087/customer";
+	@Value("${api.customer-service.uri}")
+	private String customerService; //= "http://localhost:8087/customer";
 
-	// @Value("${api.product-service.uri}")
-	private String productService = "http://localhost:8083/product";
-
-	private String movementAccountService = "http://localhost:8088/movement-account";
+	@Value("${api.product-service.uri}")
+	private String productService; //= "http://localhost:8083/product";
+	
+	@Value("${api.movement-account-service.uri}")
+	private String movementAccountService; //= "http://localhost:8088/movement-account";
 
 	public Flux<Account> findAll() {
 		return repository.findAll();
