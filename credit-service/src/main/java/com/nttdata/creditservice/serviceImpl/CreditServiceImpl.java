@@ -56,7 +56,7 @@ public class CreditServiceImpl implements CreditService {
 
 	@Override
 	public Mono<Credit> save(Credit credit) {
-		Long key = generateKey(Product.class.getSimpleName());
+		Long key = generateKey(Credit.class.getSimpleName());
 		if (key >= 1) {
 			credit.setIdCredit(key);
 			log.info("SAVE[product]:" + credit.toString());
@@ -101,7 +101,7 @@ public class CreditServiceImpl implements CreditService {
 		Customer customer = this.findByIdCustomer(credit.getIdCustomer());
 		if (customer != null) {
 			// customer = this.findByIdCustomer(credit.getIdCustomer());
-			if (customer.getTypeCustomer() == TypeCustomer.empresarial) {
+			if (customer.getTypeCustomer() == TypeCustomer.company) {
 				hashMap.put("Product", "El cliente no puede tener una cuenta de credito.");
 				isValid = false;
 			}
@@ -110,8 +110,13 @@ public class CreditServiceImpl implements CreditService {
 			isValid = false;
 		}
 		if (isValid) {
-			Mono.fromRunnable(() -> this.save(credit)).subscribe(e -> log.info("fromRunnable:" + e.toString()));
-			hashMap.put("Credit", credit);
+			//Mono.fromRunnable(() -> ).subscribe(e -> log.info("fromRunnable:" + e.toString()));
+			 this.save(credit).map(e->{
+		
+				return  Mono.just(hashMap);
+			}).subscribe();
+				hashMap.put("Credit", credit);
+			 return hashMap;
 		}
 		log.info(hashMap.toString());
 		return hashMap;
