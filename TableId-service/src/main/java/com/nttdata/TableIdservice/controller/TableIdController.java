@@ -74,11 +74,11 @@ public class TableIdController {
 		});
 	}
 	@GetMapping("/generateKey/{nameTable}")
-	public Mono<ResponseEntity<Long>> generateKey(@PathVariable(name = "nameTable") String nameTable) {
-		return tableIdService.generateKey(nameTable)
-				.map(tableId -> ResponseEntity.ok().body(tableId)).onErrorResume(e -> {
+	public Mono<Long> generateKey(@PathVariable(name = "nameTable") String nameTable) {
+		return tableIdService.generateKey(nameTable);
+				/*.map(tableId -> ResponseEntity.ok().body(tableId)).onErrorResume(e -> {
 			log.info(e.getMessage());
 			return Mono.just(ResponseEntity.badRequest().build());
-		}).defaultIfEmpty(ResponseEntity.noContent().build());
+		}).defaultIfEmpty(ResponseEntity.noContent().build());*/
 	}
 }

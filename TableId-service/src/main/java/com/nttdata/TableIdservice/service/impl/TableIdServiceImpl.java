@@ -51,39 +51,24 @@ public class TableIdServiceImpl implements TableIdService {
 
 	@Override
 	public Mono<Long> generateKey(String nameTable) {
-		return this.findAll().filter(e -> e.getNameTable().equalsIgnoreCase(nameTable)).collect(Collectors.counting())
-				.flatMap(value -> {
-					log.info("flatMap[value]:" + value);
-					if (value <= 0) {
-						return this.save(new TableId(nameTable,Long.valueOf(1))).map(_obj -> {
-							log.info("save:"+_obj.toString());
-							return _obj.getSecuencia();
-						});
-
-					} else {
-						return this.findById(nameTable).map(objU -> {
-							log.info("findById:"+objU.toString());
-							objU.setSecuencia(objU.getSecuencia() + 1);
-							Mono<Long> mono = this.update(objU).map(_obj -> {
-									log.info("update:"+objU.toString());
-								 return _obj.getSecuencia();
-							});
-							mono.subscribe();
-							return objU.getSecuencia();
-						});
-
-					}
-				});
-		/*
-		 * .map(e->{ log.info("map[value]:"+e); return e; }) //
-		 * .subscribe(e->log.info("subcribe:"+e)) ;
-		 * 
-		 * .map(e->{return e;}) .defaultIfEmpty(new TableId(nameTable, 0))
-		 * .flatMap(obj->{ log.info("flatMap:"+obj.toString()); return Mono.just(obj);
-		 * }) .subscribe(e->log.info(e.toString()));
-		 */
-
-		// return Mono.just(Integer.valueOf(0));
+		TableId tableId = (TableId) tableIdRepository.findById(nameTable).toFuture().join();
+		
+		if (tableId != null) {
+			log.info("tableId:"+tableId.toString());
+			tableId.setSecuencia(Long.valueOf(tableId.getSecuencia()+1));			
+			return this.update(tableId).map(_obj -> {
+				log.info("save[generateKey]:" + _obj.toString());
+				return _obj.getSecuencia();
+			});
+			//return Mono.just(tableId.getSecuencia());
+		} else {
+			tableId = new TableId(nameTable, Long.valueOf(1));			
+			return this.save(tableId).map(_obj -> {
+				log.info("update[generateKey]:" + _obj.toString());
+				return _obj.getSecuencia();
+			});
+			//return Mono.just(tableId.getSecuencia());
+		}
 	}
 
 }

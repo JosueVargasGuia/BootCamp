@@ -49,9 +49,10 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Mono<Product> save(Product product) {
-		Long key=generateKey(Product.class.getName());
+		Long key=generateKey(Product.class.getSimpleName());
 		if(key>=1) {
 			product.setIdProducto(key);
+			log.info("SAVE[product]:"+product.toString());
 		}
 		return productRepository.insert(product);
 	}
@@ -79,10 +80,11 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Long generateKey(String nameTable) {
 		log.info(tableIdService + "/generateKey/" + nameTable);
-		ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/" + nameTable, HttpMethod.GET,
+		ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/generateKey/" + nameTable, HttpMethod.GET,
 				null, new ParameterizedTypeReference<Long>() {
 				});
 		if (responseGet.getStatusCode() == HttpStatus.OK) {
+			log.info("Body:"+ responseGet.getBody());
 			return responseGet.getBody();
 		} else {
 			return Long.valueOf(0);
