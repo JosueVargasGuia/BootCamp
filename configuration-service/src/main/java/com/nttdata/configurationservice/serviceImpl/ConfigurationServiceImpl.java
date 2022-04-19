@@ -9,7 +9,13 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.nttdata.configurationservice.entity.Configuration;
 import com.nttdata.configurationservice.repository.ConfigurationRepository;
@@ -23,6 +29,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	Logger log = LoggerFactory.getLogger(ConfigurationService.class);
 	@Autowired
 	ConfigurationRepository configurationRepository;
+	@Autowired
+	RestTemplate restTemplate;
+
+	@Value("${api.tableId-service.uri}")
+	String tableIdService;
 
 	@Override
 	public Flux<Configuration> findAll() {
@@ -33,6 +44,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Override
 	public Mono<Configuration> save(Configuration configuration) {
+		Long key = generateKey(Configuration.class.getSimpleName());
+		if (key >= 1) {
+			configuration.setIdConfiguration(key);
+			log.info("SAVE[product]:" + configuration.toString());
+		}
 		return configurationRepository.insert(configuration);
 	}
 
@@ -44,23 +60,24 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Override
 	public Mono<Configuration> update(Configuration configuration) {
-		//Verificar logica si aplica la busqueda del flatMap
-		/*Mono<Configuration> mono = configurationRepository.findById(configuration.getIdConfiguration())
-				.flatMap(objConfiguration -> {	
-					log.info("Update:[new]"+configuration +" [Old]:"+objConfiguration);
-					return configurationRepository.save(configuration);
-				});*/
+		// Verificar logica si aplica la busqueda del flatMap
+		/*
+		 * Mono<Configuration> mono =
+		 * configurationRepository.findById(configuration.getIdConfiguration())
+		 * .flatMap(objConfiguration -> { log.info("Update:[new]"+configuration
+		 * +" [Old]:"+objConfiguration); return
+		 * configurationRepository.save(configuration); });
+		 */
 		return configurationRepository.save(configuration);
 	}
 
 	@Override
 	public Mono<Void> delete(Long id) {
-		/*Mono<Void> mono = configurationRepository.findById(id)
-				.flatMap(configuration -> {				
-			return configurationRepository.delete(configuration);
-		});
-		return mono;*/
-		  return configurationRepository.deleteById( id);
+		/*
+		 * Mono<Void> mono = configurationRepository.findById(id) .flatMap(configuration
+		 * -> { return configurationRepository.delete(configuration); }); return mono;
+		 */
+		return configurationRepository.deleteById(id);
 	}
 
 	Long maxValue = Long.valueOf(0);// Buscar una solucion para el identity en mongodb
@@ -115,4 +132,17 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		return mono;
 	}
 
+	@Override
+	public Long generateKey(String nameTable) {
+		log.info(tableIdService + "/generateKey/" + nameTable);
+		ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/generateKey/" + nameTable,
+				HttpMethod.GET, null, new ParameterizedTypeReference<Long>() {
+				});
+		if (responseGet.getStatusCode() == HttpStatus.OK) {
+			log.info("Body:" + responseGet.getBody());
+			return responseGet.getBody();
+		} else {
+			return Long.valueOf(0);
+		}
+	}
 }

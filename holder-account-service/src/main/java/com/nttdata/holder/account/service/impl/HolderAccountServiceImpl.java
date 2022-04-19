@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -35,11 +36,14 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 	@Autowired
 	RestTemplate restTemplate;
 
-	// @Value("${api.account-service.uri}")
-	private String accountService = "http://localhost:8086/account";
+	@Value("${api.account-service.uri}")
+	private String accountService; // = "http://localhost:8086/account";
 
-	// @Value("${api.customer-service.uri}")
-	private String customerService = "http://localhost:8087/customer";
+	@Value("${api.customer-service.uri}")
+	private String customerService;// = "http://localhost:8087/customer";
+
+	@Value("${api.tableId-service.uri}")
+	String tableIdService;
 
 	@Override
 	public Mono<HolderAccount> findById(Long id) {
@@ -56,6 +60,12 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 	@Override
 	public Mono<HolderAccount> save(HolderAccount holderAccount) {
 		// metodo para insertar un nuevo titular de la cuenta
+		
+		Long key=generateKey(HolderAccount.class.getSimpleName());
+		if(key>=1) {
+			holderAccount.setIdHolderAccount(key);
+			//log.info("SAVE[product]:"+holderAccount.toString());
+		}
 		return repository.insert(holderAccount);
 	}
 
@@ -84,11 +94,11 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 		logger.info("Customer: " + customer + "\nAccount: " + account);
 
 		if (customer != null && account != null) {
-			if(account.getIdCustomer() == holderAccount.getIdCustomer()) {
+			if (account.getIdCustomer() == holderAccount.getIdCustomer()) {
 				return this.findAll()
 						.filter(obj -> (obj.getIdCustomer() == customer.getId()
 								&& obj.getIdAccount() == account.getIdAccount()))
-						.collect(Collectors.counting()).map(value -> {	
+						.collect(Collectors.counting()).map(value -> {
 							if (customer.getTypeCustomer() == TypeCustomer.company) {
 								this.save(holderAccount).subscribe(e -> logger.info("Message:" + e.toString()));
 								logger.info("Titular de cuenta registrado.");
@@ -105,7 +115,7 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 							}
 							return hashMap;
 						});
-			}else {
+			} else {
 				logger.info("La cuenta ingresada no le pertenece.");
 				hashMap.put("Holder Account: ", "La cuenta ingresada no le pertenece.");
 			}
@@ -144,4 +154,17 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 		}
 	}
 
+	@Override
+	public Long generateKey(String nameTable) {
+//		/log.info(tableIdService + "/generateKey/" + nameTable);
+		ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/generateKey/" + nameTable, HttpMethod.GET,
+				null, new ParameterizedTypeReference<Long>() {
+				});
+		if (responseGet.getStatusCode() == HttpStatus.OK) {
+		//	log.info("Body:"+ responseGet.getBody());
+			return responseGet.getBody();
+		} else {
+			return Long.valueOf(0);
+		}
+	}
 }

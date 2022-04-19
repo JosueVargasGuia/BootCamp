@@ -28,8 +28,10 @@ public interface CreditService {
 
 	Customer findByIdCustomer(Long idCustomer);
 
-	//Mono<Map<String, Object>> consultMovements(Long idCredit);
+	// Mono<Map<String, Object>> consultMovements(Long idCredit);
 
 	Flux<MovementCredit> consultMovements(Long idCredit);
+
+	Long generateKey(String nameTable);
 
 }

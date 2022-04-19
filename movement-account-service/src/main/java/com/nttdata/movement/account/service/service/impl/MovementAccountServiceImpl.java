@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -35,9 +36,10 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 	@Autowired
 	RestTemplate restTemplate;
 
-	// @Value("${api.credit-service.uri}")
-	private String accountService = "http://localhost:8086/account";
-
+	@Value("${api.account-service.uri}")
+	private String accountService; //= "http://localhost:8086/account";
+	@Value("${api.tableId-service.uri}")
+	String tableIdService;
 	@Override
 	public Flux<MovementAccount> findAll() {
 		return repository.findAll();
@@ -50,6 +52,11 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 
 	@Override
 	public Mono<MovementAccount> save(MovementAccount movementAccount) {
+		Long key=generateKey(MovementAccount.class.getSimpleName());
+		if(key>=1) {
+			movementAccount.setIdMovementAccount(key);
+			//log.info("SAVE[product]:"+movementAccount.toString());
+		}
 		return repository.insert(movementAccount);
 	}
 
@@ -148,5 +155,17 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 			return Mono.just(hashMap);
 		}
 	}
-
+	@Override
+	public Long generateKey(String nameTable) {
+		//log.info(tableIdService + "/generateKey/" + nameTable);
+		ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/generateKey/" + nameTable, HttpMethod.GET,
+				null, new ParameterizedTypeReference<Long>() {
+				});
+		if (responseGet.getStatusCode() == HttpStatus.OK) {
+			//log.info("Body:"+ responseGet.getBody());
+			return responseGet.getBody();
+		} else {
+			return Long.valueOf(0);
+		}
+	}
 }

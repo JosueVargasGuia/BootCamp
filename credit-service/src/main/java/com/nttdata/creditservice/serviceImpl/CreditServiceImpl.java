@@ -45,6 +45,9 @@ public class CreditServiceImpl implements CreditService {
 	@Value("${api.movementCredit-service.uri}")
 	private String movementCreditService;
 
+	@Value("${api.tableId-service.uri}")
+	String tableIdService;
+	
 	@Override
 	public Flux<Credit> findAll() {
 		return creditRepository.findAll()
@@ -53,6 +56,11 @@ public class CreditServiceImpl implements CreditService {
 
 	@Override
 	public Mono<Credit> save(Credit credit) {
+		Long key=generateKey(Product.class.getSimpleName());
+		if(key>=1) {
+			credit.setIdCredit(key);
+			log.info("SAVE[product]:"+credit.toString());
+		}
 		return creditRepository.insert(credit);
 	}
 
@@ -174,5 +182,17 @@ public class CreditServiceImpl implements CreditService {
 		}
 
 	}
-
+	@Override
+	public Long generateKey(String nameTable) {
+		log.info(tableIdService + "/generateKey/" + nameTable);
+		ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/generateKey/" + nameTable, HttpMethod.GET,
+				null, new ParameterizedTypeReference<Long>() {
+				});
+		if (responseGet.getStatusCode() == HttpStatus.OK) {
+			log.info("Body:"+ responseGet.getBody());
+			return responseGet.getBody();
+		} else {
+			return Long.valueOf(0);
+		}
+	}
 }
