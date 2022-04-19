@@ -21,12 +21,13 @@ public interface MovementCreditService {
 
 	Mono<Void> delete(Long idMovementCredit);
 
-	Mono<Map<String, Object>>  recordsMovement(MovementCredit movementCredit);
+	Mono<Map<String, Object>> recordsMovement(MovementCredit movementCredit);
 
 	Credit findByIdCredit(Long idCredit);
 
 	Mono<Map<String, Object>> balanceInquiry(Credit credit);
 
-	//List<MovementCredit> findAllList();
+	Long generateKey(String nameTable);
+	// List<MovementCredit> findAllList();
 
 }

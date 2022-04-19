@@ -47,7 +47,7 @@ public class CreditServiceImpl implements CreditService {
 
 	@Value("${api.tableId-service.uri}")
 	String tableIdService;
-	
+
 	@Override
 	public Flux<Credit> findAll() {
 		return creditRepository.findAll()
@@ -56,10 +56,10 @@ public class CreditServiceImpl implements CreditService {
 
 	@Override
 	public Mono<Credit> save(Credit credit) {
-		Long key=generateKey(Product.class.getSimpleName());
-		if(key>=1) {
+		Long key = generateKey(Product.class.getSimpleName());
+		if (key >= 1) {
 			credit.setIdCredit(key);
-			log.info("SAVE[product]:"+credit.toString());
+			log.info("SAVE[product]:" + credit.toString());
 		}
 		return creditRepository.insert(credit);
 	}
@@ -133,41 +133,40 @@ public class CreditServiceImpl implements CreditService {
 
 	@Override
 	public Customer findByIdCustomer(Long idCustomer) {
-		/*
-		 * ResponseEntity<Customer> responseGet = restTemplate.exchange(customerService
-		 * + "/" + idCustomer, HttpMethod.GET, null, new
-		 * ParameterizedTypeReference<Customer>() { }); if (responseGet.getStatusCode()
-		 * == HttpStatus.OK) { return responseGet.getBody(); } else { return null; }
-		 */
+		log.info(customerService + "/" + idCustomer);
+		ResponseEntity<Customer> responseGet = restTemplate.exchange(customerService + "/" + idCustomer, HttpMethod.GET,
+				null, new ParameterizedTypeReference<Customer>() {
+				});
+		if (responseGet.getStatusCode() == HttpStatus.OK) {
+			return responseGet.getBody();
+		} else {
+			return null;
+		}
+
 		/*
 		 * Long idCustomer; TypeCustomer typeCustomer; String firstName; String
 		 * lastName; String emailAddress; String phoneNumber; String homeAddress; String
 		 * document; TypeDocumento typeDocumento;
 		 */
-		if (idCustomer == 1) {
-			return new Customer(idCustomer, TypeCustomer.personal, "Josue", "Vargas Guia", "josue@nttdata.com",
-					"941451121", "jr.- calle", "45519040", TypeDocumento.dni);
-		} else if (idCustomer == 2) {
-			return new Customer(idCustomer, TypeCustomer.empresarial, "Josue", "Vargas Guia", "josue@nttdata.com",
-					"941451121", "jr.- calle", "45519040", TypeDocumento.dni);
-		} else {
-			return null;
-		}
+		/*
+		 * if (idCustomer == 1) { return new Customer(idCustomer, TypeCustomer.personal,
+		 * "Josue", "Vargas Guia", "josue@nttdata.com", "941451121", "jr.- calle",
+		 * "45519040", TypeDocumento.dni); } else if (idCustomer == 2) { return new
+		 * Customer(idCustomer, TypeCustomer.empresarial, "Josue", "Vargas Guia",
+		 * "josue@nttdata.com", "941451121", "jr.- calle", "45519040",
+		 * TypeDocumento.dni); } else { return null; }
+		 */
 
 	}
 
-/*	@Override
-	public Flux<MovementCredit> consultMovements(Long idCredit) {
-		Map<String, Object> hashMap = new HashMap<String, Object>();
-		if (this.findById(idCredit) != null) {
-			hashMap.put("Movements", this.findAllMovements(idCredit));
-			return Flux.empty();
-		} else {
-			hashMap.put("Credit", "La cuenta de credito no exite.");
-			return Flux.empty();
-		}
-	}
-*/
+	/*
+	 * @Override public Flux<MovementCredit> consultMovements(Long idCredit) {
+	 * Map<String, Object> hashMap = new HashMap<String, Object>(); if
+	 * (this.findById(idCredit) != null) { hashMap.put("Movements",
+	 * this.findAllMovements(idCredit)); return Flux.empty(); } else {
+	 * hashMap.put("Credit", "La cuenta de credito no exite."); return Flux.empty();
+	 * } }
+	 */
 	@Override
 	public Flux<MovementCredit> consultMovements(Long idCredit) {
 		ResponseEntity<List<MovementCredit>> responseGet = restTemplate.exchange(movementCreditService, HttpMethod.GET,
@@ -182,14 +181,15 @@ public class CreditServiceImpl implements CreditService {
 		}
 
 	}
+
 	@Override
 	public Long generateKey(String nameTable) {
 		log.info(tableIdService + "/generateKey/" + nameTable);
-		ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/generateKey/" + nameTable, HttpMethod.GET,
-				null, new ParameterizedTypeReference<Long>() {
+		ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/generateKey/" + nameTable,
+				HttpMethod.GET, null, new ParameterizedTypeReference<Long>() {
 				});
 		if (responseGet.getStatusCode() == HttpStatus.OK) {
-			log.info("Body:"+ responseGet.getBody());
+			log.info("Body:" + responseGet.getBody());
 			return responseGet.getBody();
 		} else {
 			return Long.valueOf(0);
