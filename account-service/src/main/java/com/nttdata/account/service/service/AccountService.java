@@ -12,17 +12,23 @@ import reactor.core.publisher.Mono;
 
 public interface AccountService {
 
-
 	Flux<Account> findAll();
+
 	Mono<Account> save(Account account);
+
 	Mono<Account> update(Account account);
+
 	Mono<Account> findById(Long id);
+
 	Mono<Void> delete(Long id);
-	
-	 Mono<Map<String, Object>> registerAccount(Account account);
-	
+
+	Mono<Map<String, Object>> registerAccount(Account account);
+
 	Product findProduct(Long id);
+
 	Customer findCustomer(Long id);
-	
+
 	Flux<MovementAccount> consultMovementsAccount(Long idCredit);
+
+	Long generateKey(String nameTable);
 }

@@ -18,4 +18,7 @@ public interface ConfigurationService {
 	Mono<Void> delete(Long id);
 
 	Mono<Void> fillData();
+
+	Long generateKey(String nameTable);
+
 }

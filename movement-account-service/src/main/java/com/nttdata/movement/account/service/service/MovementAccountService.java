@@ -11,12 +11,20 @@ import reactor.core.publisher.Mono;
 public interface MovementAccountService {
 
 	Flux<MovementAccount> findAll();
+
 	Mono<MovementAccount> findById(Long id);
+
 	Mono<MovementAccount> save(MovementAccount movementAccount);
+
 	Mono<MovementAccount> update(MovementAccount movementAccount);
+
 	Mono<Void> delete(Long id);
-	
-	Mono<Map<String, Object>>  recordsMovement(MovementAccount movementAccount);
+
+	Mono<Map<String, Object>> recordsMovement(MovementAccount movementAccount);
+
 	Account findByIdAccount(Long idAccount);
+
 	Mono<Map<String, Object>> balanceInquiry(Account account);
+
+	Long generateKey(String nameTable);
 }

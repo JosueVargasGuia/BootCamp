@@ -9,17 +9,22 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface HolderAccountService {
-	
-	Mono<HolderAccount> findById(Long id);
-	Flux<HolderAccount> findAll();
-	Mono<HolderAccount> save(HolderAccount holderAccount);
-	Mono<HolderAccount> update(HolderAccount holderAccount);
-	Mono<Void> delete(Long id);
-	
-	Mono<Map<String, Object>> registerHolderAccount(HolderAccount holderAccount);
-	
-	Customer findCustomer(Long id);
-	Account findAccount(Long id);
-	
 
+	Mono<HolderAccount> findById(Long id);
+
+	Flux<HolderAccount> findAll();
+
+	Mono<HolderAccount> save(HolderAccount holderAccount);
+
+	Mono<HolderAccount> update(HolderAccount holderAccount);
+
+	Mono<Void> delete(Long id);
+
+	Mono<Map<String, Object>> registerHolderAccount(HolderAccount holderAccount);
+
+	Customer findCustomer(Long id);
+
+	Account findAccount(Long id);
+
+	Long generateKey(String nameTable);
 }

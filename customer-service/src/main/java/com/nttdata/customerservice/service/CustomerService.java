@@ -14,5 +14,6 @@ public interface CustomerService {
 	Mono<Customer> findById(Long id);
 	Mono<Void> delete(Long id);
 
+	Long generateKey(String nameTable);
 
 }
