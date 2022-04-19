@@ -12,5 +12,6 @@ public interface ProductService {
 	Mono<Product> save(Product product);
 	Mono<Product> update(Product product);
 	Mono<Void> delete(Long idProducto);
+	Long generateKey(String nameTable);
 	Mono<Void> fillData();
 }
