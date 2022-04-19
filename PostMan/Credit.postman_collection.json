@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "3cddceaa-fd8f-4718-80c5-82d9fd9a0acf",
+		"name": "Credit",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8084/credit",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8084/credit",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"credit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8084/credit/idProductCredit",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8084/credit/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"credit",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8084/credit/consultMovements/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8084/credit/consultMovements/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"credit",
+						"consultMovements",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8084/credit/idProductCredit",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8084/credit/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"credit",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8084/credit/registerAccountCredit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"idCredit\":1,\r\n    \"idProductCredit\":1,\r\n    \"idCustomer\":2,\r\n    \"idProducto\":4,\r\n    \"amountCreditLimit\":20.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8084/credit/registerAccountCredit",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"credit",
+						"registerAccountCredit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8084/credit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idProductCredit\":2,\r\n    \"idCustomer\":1,\r\n    \"idProducto\":1,\r\n    \"amountCreditLimit\":20.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8084/credit",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"credit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8085/movementCredit/1-v",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"idCredit\": 1,\r\n        \"idCustomer\": 1,\r\n        \"idProducto\": 1,\r\n        \"amountCreditLimit\": 120.0\r\n    }"
+				},
+				"url": {
+					"raw": "localhost:8085/movementCredit/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"movementCredit",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

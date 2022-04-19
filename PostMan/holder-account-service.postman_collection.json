@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "1fe8cc78-c183-4ac8-a471-84f9bcad01d8",
+		"name": "holder-account-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8090/holder-account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8090/holder-account",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"holder-account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8090/holder-account/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8090/holder-account/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"holder-account",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8090/holder-account/1",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8090/holder-account/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"holder-account",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8090/holder-account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idHolderAccount\":10,\r\n    \"idCustomer\":1,\r\n    \"idAccount\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/holder-account",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"holder-account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "registerHolderAccount",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idHolderAccount\":1,\r\n    \"idCustomer\":1,\r\n    \"idAccount\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/holder-account/registerHolderAccount",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"holder-account",
+						"registerHolderAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8090/holder-account",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idHolderAccount\":1,\r\n    \"idCustomer\":2,\r\n    \"idAccount\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/holder-account",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"holder-account"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

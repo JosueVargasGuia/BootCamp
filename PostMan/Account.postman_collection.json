@@ -1,0 +1,179 @@
+{
+	"info": {
+		"_postman_id": "c3d241fb-d59f-438b-8a52-f4941b602c67",
+		"name": "Account",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8086/account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8086/account/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"account",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8086/account/1",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8086/account/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"account",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8086/account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8086/account",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8086/account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idAccount\":10,\r\n    \"idProduct\":2,\r\n    \"idCustomer\":1,\r\n    \"amount\":10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8086/account",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8086/account/registerAccount",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idAccount\":1,\r\n    \"idProduct\":2,\r\n    \"idCustomer\":1,\r\n    \"amount\":20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8086/account/registerAccount",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"account",
+						"registerAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8086/account/consultMovementsAccount",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idAccount\":1,\r\n    \"idProduct\":1,\r\n    \"idCustomer\":1,\r\n    \"amount\":20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8086/account/consultMovementsAccount/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"account",
+						"consultMovementsAccount",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8086/account",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idAccount\":1,\r\n    \"idProduct\": 2,\r\n    \"idCustomer\": 1,\r\n    \"amount\": 10.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8086/account",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"account"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -34,6 +34,8 @@ public class MovementCreditServiceImpl implements MovementCreditService {
 	@Value("${api.credit-service.uri}")
 	private String creditService;
 
+@Value("${api.tableId-service.uri}")
+	String tableIdService;
 	@Override
 	public Flux<MovementCredit> findAll() {
 		return movementCreditRepository.findAll().sort((movementCredit1, movementCredit2) -> movementCredit1
@@ -42,7 +44,11 @@ public class MovementCreditServiceImpl implements MovementCreditService {
 
 	@Override
 	public Mono<MovementCredit> save(MovementCredit movementCredit) {
-
+		Long key=generateKey(MovementCredit.class.getSimpleName());
+		if(key>=1) {
+			movementCredit.setIdMovementCredit(key);
+			log.info("SAVE[product]:"+movementCredit.toString());
+		}
 		return movementCreditRepository.insert(movementCredit);
 	}
 
@@ -151,7 +157,19 @@ public class MovementCreditServiceImpl implements MovementCreditService {
 			return Mono.just(hashMap);
 		}
 	}
-
+	@Override
+	public Long generateKey(String nameTable) {
+		log.info(tableIdService + "/generateKey/" + nameTable);
+		ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/generateKey/" + nameTable, HttpMethod.GET,
+				null, new ParameterizedTypeReference<Long>() {
+				});
+		if (responseGet.getStatusCode() == HttpStatus.OK) {
+			log.info("Body:"+ responseGet.getBody());
+			return responseGet.getBody();
+		} else {
+			return Long.valueOf(0);
+		}
+	}
 	/*
 	 * @Override public List<MovementCredit> findAllList() {
 	 * ResponseEntity<List<MovementCredit>> responseGet =

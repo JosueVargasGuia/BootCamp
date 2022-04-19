@@ -1,0 +1,157 @@
+{
+	"info": {
+		"_postman_id": "9f3d1125-6c64-4a41-af28-2e5a71fe1610",
+		"name": "Product",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8083/product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8083/product",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8083/product/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8083/product/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"product",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8083/product/fillData",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8083/product/fillData",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"product",
+						"fillData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8083/product/test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8083/product/test",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"product",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8083/product",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8083/product/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"product",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8083/product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idProducto\":1,\r\n    \"descriptionProducto\":\"descriptionProducto\",\r\n    \"typeProduct\":\"activos\",\r\n    \"idConfiguration\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8083/product",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8083/product",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n        \"idProducto\": 4,\r\n        \"descriptionProducto\": \"Plazo fijo11\",\r\n        \"typeProduct\": \"pasivos\",\r\n        \"idConfiguration\": 3\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8083/product",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"product"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

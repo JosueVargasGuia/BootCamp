@@ -3,7 +3,7 @@ package com.nttdata.SignCustAccountservice.service;
 import java.util.Map;
 
 import com.nttdata.SignCustAccountservice.entity.SignatoriesCustomerAccounts;
-import com.nttdata.SignCustAccountservice.model.Account; 
+import com.nttdata.SignCustAccountservice.model.Account;
 import com.nttdata.SignCustAccountservice.model.Customer;
 import com.nttdata.SignCustAccountservice.model.Product;
 
@@ -29,4 +29,6 @@ public interface SignatoriesCustomerAccountsService {
 	Account findIdCredit(Long idCredit);
 
 	Mono<Map<String, Object>> registerSignature(SignatoriesCustomerAccounts signatoriesCustomerAccounts);
+
+	Long generateKey(String nameTable);
 }

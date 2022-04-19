@@ -41,6 +41,8 @@ public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustom
 
 	@Value("${api.customer-service.uri}")
 	private String customerService;
+	@Value("${api.tableId-service.uri}")
+	String tableIdService;
 
 	@Autowired
 	SignatoriesCustomerAccountsRepository accountsRepository;
@@ -64,6 +66,13 @@ public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustom
 	@Override
 	public Mono<SignatoriesCustomerAccounts> save(SignatoriesCustomerAccounts signatoriesCustomerAccounts) {
 		// TODO Auto-generated method stub
+		
+		Long key=generateKey(SignatoriesCustomerAccounts.class.getSimpleName());
+				if(key>=1) {
+					signatoriesCustomerAccounts.setIdSignCustAccount(key);
+					log.info("SAVE[product]:"+signatoriesCustomerAccounts.toString());
+				}
+		
 		return accountsRepository.insert(signatoriesCustomerAccounts);
 	}
 
@@ -76,7 +85,7 @@ public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustom
 	@Override
 	public Mono<Void> delete(Long idSignatoriesCustomerAccounts) {
 		// TODO Auto-generated method stub
-		
+
 		return accountsRepository.deleteById(idSignatoriesCustomerAccounts);
 	}
 
@@ -98,38 +107,41 @@ public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustom
 							|| product.getProductId() == ProductId.Empresarial
 							|| product.getProductId() == ProductId.TarjetaCreditoEmpresarial) {
 						hasMap.put("SignatoriesCustomerAccounts", "Firma autorisante registrado.");
-						Mono<Map<String, Object>> mono= this.save(signatoriesCustomerAccounts) .map(_obj->{
+						Mono<Map<String, Object>> mono = this.save(signatoriesCustomerAccounts).map(_obj -> {
 							log.info("SignatoriesCustomerAccounts:Firma autorisante registrado.");
-														
+
 							return hasMap;
 						});
-						//mono.subscribe();
-						 return mono;
-					}else {
-						hasMap.put("SignatoriesCustomerAccounts", "No se puede registrar la firma autorisante en la cuenta");
+						// mono.subscribe();
+						return mono;
+					} else {
+						hasMap.put("SignatoriesCustomerAccounts",
+								"No se puede registrar la firma autorisante en la cuenta");
 						return Mono.just(hasMap);
 					}
 
 				}
 				if (customer.getTypeCustomer() == TypeCustomer.personal) {
 					// Solo un registro
-					 Mono<Map<String, Object>> mono=this.findAll()
+					Mono<Map<String, Object>> mono = this.findAll()
 							.filter(_filter -> _filter.getIdAccount() == signatoriesCustomerAccounts.getIdAccount()
 									&& _filter.getIdCustomer() == signatoriesCustomerAccounts.getIdCustomer())
-							.collect(Collectors.counting()).map(_value -> {								 
+							.collect(Collectors.counting()).map(_value -> {
 								if (_value <= 0) {
 									hasMap.put("SignatoriesCustomerAccounts", "Firma autorisante registrado.");
 									log.info("SignatoriesCustomerAccounts:Firma autorisante registrado.");
-									this.save(signatoriesCustomerAccounts).subscribe();									 
+									this.save(signatoriesCustomerAccounts).subscribe();
 								} else {
-									log.info("SignatoriesCustomerAccounts:Existe  una firma registrada para  el cliente " + customer.getFirstname());
+									log.info(
+											"SignatoriesCustomerAccounts:Existe  una firma registrada para  el cliente "
+													+ customer.getFirstname());
 									hasMap.put("customer",
 											"Existe  una firma registrada para  el cliente " + customer.getFirstname());
 								}
 								return hasMap;
 							});
-					 	//mono.subscribe();					  
-					  return mono;
+					// mono.subscribe();
+					return mono;
 
 				}
 				return Mono.just(hasMap);
@@ -174,15 +186,28 @@ public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustom
 	@Override
 	public Account findIdCredit(Long idCredit) {
 		log.info(accountService + "/" + idCredit);
-		ResponseEntity<Account> responseGet = restTemplate
-				.exchange(accountService + "/" + idCredit, HttpMethod.GET,
+		ResponseEntity<Account> responseGet = restTemplate.exchange(accountService + "/" + idCredit, HttpMethod.GET,
 				null, new ParameterizedTypeReference<Account>() {
 				});
-		
+
 		if (responseGet.getStatusCode() == HttpStatus.OK) {
 			return responseGet.getBody();
 		} else {
 			return null;
+		}
+	}
+	
+	@Override
+	public Long generateKey(String nameTable) {
+		log.info(tableIdService + "/generateKey/" + nameTable);
+		ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/generateKey/" + nameTable, HttpMethod.GET,
+				null, new ParameterizedTypeReference<Long>() {
+				});
+		if (responseGet.getStatusCode() == HttpStatus.OK) {
+			log.info("Body:"+ responseGet.getBody());
+			return responseGet.getBody();
+		} else {
+			return Long.valueOf(0);
 		}
 	}
 }

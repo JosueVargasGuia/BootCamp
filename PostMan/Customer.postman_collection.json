@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "8cecf25c-831f-4a33-801c-1baa51bb5fda",
+		"name": "Customer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:80873/customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"id\": 10,\r\n        \"firstname\": \"Josue\",\r\n        \"lastname\": \"Vargas Guia\",\r\n        \"documentNumber\": \"45519040\",\r\n        \"typeDocument\": \"dni\",\r\n        \"typeCustomer\": \"personal\",\r\n        \"emailAddress\": \"sejue1@gmail.com\",\r\n        \"phoneNumber\": \"941451121\",\r\n        \"homeAddress\": \"jr.- La marisma 127\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8087/customer",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"customer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8087/customer",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":34,\r\n    \"firstname\":\"Josue\",\r\n    \"lastname\":\"Vargas Guia\",\r\n    \"documentNumber\":\"45519040\",\r\n    \"typeDocument\":\"dni\",\r\n    \"typeCustomer\":\"personal\",\r\n    \"emailAddress\":\"sejue1@gmail.com\",\r\n    \"phoneNumber\":\"941451121\",\r\n    \"homeAddress\":\"jr.- La marisma 127\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8087/customer",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"customer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8087/customer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8087/customer",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"customer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8087/customer/3",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8087/customer/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"customer",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8087/customer/3",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8087/customer/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"customer",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
