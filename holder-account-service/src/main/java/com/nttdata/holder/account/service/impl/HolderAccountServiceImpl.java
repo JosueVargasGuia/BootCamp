@@ -26,25 +26,24 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class HolderAccountServiceImpl implements HolderAccountService {
-	
+
 	Logger logger = LoggerFactory.getLogger(HolderAccountServiceImpl.class);
 
-	
 	@Autowired
 	private HolderAccountRepository repository;
-	
+
 	@Autowired
 	RestTemplate restTemplate;
 
-	//@Value("${api.account-service.uri}")
-	private String accountService="http://localhost:8086/account";
-	
-	//@Value("${api.customer-service.uri}")
-	private String customerService="http://localhost:8087/customer";
-	
+	// @Value("${api.account-service.uri}")
+	private String accountService = "http://localhost:8086/account";
+
+	// @Value("${api.customer-service.uri}")
+	private String customerService = "http://localhost:8087/customer";
+
 	@Override
 	public Mono<HolderAccount> findById(Long id) {
-		// metodo para la busqueda por id del titular de la cuenta 
+		// metodo para la busqueda por id del titular de la cuenta
 		return repository.findById(id);
 	}
 
@@ -74,47 +73,46 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 
 	@Override
 	public Mono<Map<String, Object>> registerHolderAccount(HolderAccount holderAccount) {
-		// metodo para registrar el titular de la cuenta empresarial que puede ser mas de un titular
-		
+		// metodo para registrar el titular de la cuenta empresarial que puede ser mas
+		// de un titular
+
 		Map<String, Object> hashMap = new HashMap<String, Object>();
-		
+
 		Customer customer = findCustomer(holderAccount.getIdCustomer());
 		Account account = findAccount(holderAccount.getIdAccount());
-		
-		logger.info("Customer: "+customer+"\nAccount: "+account);
-		
-		if (customer!=null && account!=null) {
-			
-			//if (customer.getTypeCustomer() == TypeCustomer.company) {
-				
-				//Mono<Map<String, Object>> mono = 
-						return this.findAll()
-						
+
+		logger.info("Customer: " + customer + "\nAccount: " + account);
+
+		if (customer != null && account != null) {
+			if(account.getIdCustomer() == holderAccount.getIdCustomer()) {
+				return this.findAll()
 						.filter(obj -> (obj.getIdCustomer() == customer.getId()
 								&& obj.getIdAccount() == account.getIdAccount()))
-						.collect(Collectors.counting())
-						.map(value-> {
+						.collect(Collectors.counting()).map(value -> {	
 							if (customer.getTypeCustomer() == TypeCustomer.company) {
 								this.save(holderAccount).subscribe(e -> logger.info("Message:" + e.toString()));
 								logger.info("Titular de cuenta registrado.");
 								hashMap.put("Holder Account: ", "Titular de cuenta registrado.");
-							}else {
-								if(value<=0){
+							} else {
+								if (value <= 0) {
 									this.save(holderAccount).subscribe(e -> logger.info("Message:" + e.toString()));
 									logger.info("Titular de cuenta registrado.");
 									hashMap.put("Holder Account: ", "Titular de cuenta registrado.");
-								}else {
+								} else {
 									logger.info("Ya tienes un titular registrado.");
 									hashMap.put("Holder Account: ", "Ya tienes un titular registrado.");
 								}
 							}
 							return hashMap;
 						});
-		}else {
+			}else {
+				logger.info("La cuenta ingresada no le pertenece.");
+				hashMap.put("Holder Account: ", "La cuenta ingresada no le pertenece.");
+			}
+		} else {
 			hashMap.put("Error message: ", "Cliente o cuenta no encontrados.");
 		}
-		
-	
+
 		return Mono.just(hashMap);
 	}
 
@@ -123,7 +121,8 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 		// metodo que busca por id al cliente asociado
 		logger.info(customerService + "/" + id);
 		ResponseEntity<Customer> response = restTemplate.exchange(customerService + "/" + id, HttpMethod.GET, null,
-				new ParameterizedTypeReference<Customer>() {});
+				new ParameterizedTypeReference<Customer>() {
+				});
 		if (response.getStatusCode() == HttpStatus.OK) {
 			return response.getBody();
 		} else {
@@ -136,7 +135,8 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 		// metodo que busca por id la cuenta asociada
 		logger.info(accountService + "/" + id);
 		ResponseEntity<Account> response = restTemplate.exchange(accountService + "/" + id, HttpMethod.GET, null,
-				new ParameterizedTypeReference<Account>() {});
+				new ParameterizedTypeReference<Account>() {
+				});
 		if (response.getStatusCode() == HttpStatus.OK) {
 			return response.getBody();
 		} else {
