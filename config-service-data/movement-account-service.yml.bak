@@ -1,0 +1,12 @@
+server.port=8088
+spring:
+  data:
+    mongodb:
+      database: bank
+      host: localhost
+      port: 27017
+api:
+  tableId-service:
+    uri: http://localhost:8091/tableid
+  account-service:
+    uri: http://localhost:8086/account

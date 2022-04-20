@@ -26,12 +26,14 @@ import com.nttdata.SignCustAccountservice.model.TypeCustomer;
 import com.nttdata.SignCustAccountservice.repository.SignatoriesCustomerAccountsRepository;
 import com.nttdata.SignCustAccountservice.service.SignatoriesCustomerAccountsService;
 
+import lombok.extern.log4j.Log4j2;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Log4j2
 @Service
 public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustomerAccountsService {
-	Logger log = LoggerFactory.getLogger(SignatoriesCustomerAccountsServiceImpl.class);
+	//Logger log = LoggerFactory.getLogger(SignatoriesCustomerAccountsServiceImpl.class);
 
 	@Value("${api.account-service.uri}")
 	private String accountService;
@@ -205,6 +207,7 @@ public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustom
 				});
 		if (responseGet.getStatusCode() == HttpStatus.OK) {
 			log.info("Body:"+ responseGet.getBody());
+			
 			return responseGet.getBody();
 		} else {
 			return Long.valueOf(0);
