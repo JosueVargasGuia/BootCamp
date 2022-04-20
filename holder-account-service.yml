@@ -1,0 +1,15 @@
+api:
+  tableId-service:
+    uri: http://localhost:8091/tableid
+  customer-service:
+    uri: http://localhost:8087/customer
+  account-service:
+    uri: http://localhost:8086/account
+server:
+  port: '8090'
+spring:
+  data:
+    mongodb:
+      database: bank
+      port: '27017'
+      host: localhost
