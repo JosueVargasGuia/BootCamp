@@ -1,0 +1,15 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: config-service
+#Apuntar el path a la ruta
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/JosueVargasGuia/BootCamp.git
+          default-label: Dev-Josue
+          search-paths: /config-service-data
+#          username:
+#          password:
