@@ -120,14 +120,14 @@ public class AccountServiceImpl implements AccountService {
 			if (product.getTypeProduct() == TypeProduct.pasivos) {
 				if (product.getProductId() == ProductId.CuentaCorriente) {
 					this.save(account).subscribe(e -> log.info("Message:" + e.toString()));
-					log.info(" Empresarial Cuenta corriente registrada.");
+					log.info("Cliente Empresarial -> Cuenta corriente registrada.");
 					hashMap.put("Account: ", "Cuenta corriente registrada.");
 				} else {
-					log.info(" Empresarial No es posible abrir una cuenta de  " + product.getDescriptionProducto());
+					log.info("Cliente Empresarial -> No es posible abrir una cuenta de  " + product.getDescriptionProducto());
 					hashMap.put("Account: ", "No es posible abrir una cuenta de " + product.getDescriptionProducto());
 				}
 			} else {
-				log.info(" Empresarial Este servicio es para el registro de cuentas bancarias.");
+				log.info("Este servicio es para el registro de cuentas bancarias.");
 				hashMap.put("Account", "Este servicio es para el registro de cuentas bancarias.");
 			}
 		}

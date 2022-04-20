@@ -1,0 +1,11 @@
+api:
+  tableId-service:
+    uri: http://localhost:8091/tableid
+server:
+  port: '8082'
+spring:
+  data:
+    mongodb:
+      database: bank
+      port: '27017'
+      host: localhost
