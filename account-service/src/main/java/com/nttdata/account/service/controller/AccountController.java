@@ -53,7 +53,7 @@ public class AccountController {
 	public Mono<ResponseEntity<Account>> saveAccount(@RequestBody Account account){
 		return service.save(account).map(_account -> ResponseEntity.ok().body(_account)).
 				onErrorResume(e -> {
-			log.info("Error:" + e.getMessage());
+			log.error("Error:" + e.getMessage());
 			return Mono.just(ResponseEntity.badRequest().build());
 		});
 	}
@@ -69,7 +69,7 @@ public class AccountController {
 			log.info("Status: " + HttpStatus.OK);
 			return ResponseEntity.ok().body(_account);
 		}).onErrorResume(e -> {
-			log.info("Status: " + HttpStatus.BAD_REQUEST + " Message:  " + e.getMessage());
+			log.error("Status: " + HttpStatus.BAD_REQUEST + " Message:  " + e.getMessage());
 			return Mono.just(ResponseEntity.badRequest().build());
 		}).defaultIfEmpty(ResponseEntity.noContent().build());
 	}
