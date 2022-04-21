@@ -1,18 +1,18 @@
 {
 	"info": {
-		"_postman_id": "8cecf25c-831f-4a33-801c-1baa51bb5fda",
+		"_postman_id": "d4f98ede-1f31-4615-9043-f7d1ffa17aa4",
 		"name": "Customer",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "localhost:80873/customer",
+			"name": "insert",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": " {\r\n        \"id\": 10,\r\n        \"firstname\": \"Josue\",\r\n        \"lastname\": \"Vargas Guia\",\r\n        \"documentNumber\": \"45519040\",\r\n        \"typeDocument\": \"dni\",\r\n        \"typeCustomer\": \"personal\",\r\n        \"emailAddress\": \"sejue1@gmail.com\",\r\n        \"phoneNumber\": \"941451121\",\r\n        \"homeAddress\": \"jr.- La marisma 127\"\r\n    }",
+					"raw": "{\r\n    \"firstname\": \"Javier\",\r\n    \"lastname\": \"Hoyle\",\r\n    \"documentNumber\": \"78676534\",\r\n    \"typeDocument\": \"dni\",\r\n    \"typeCustomer\": \"company\",\r\n    \"emailAddress\": \"javier@gmail.com\",\r\n    \"phoneNumber\": \"998765678\",\r\n    \"homeAddress\": \"San Borja 123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -33,13 +33,13 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8087/customer",
+			"name": "update",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\":34,\r\n    \"firstname\":\"Josue\",\r\n    \"lastname\":\"Vargas Guia\",\r\n    \"documentNumber\":\"45519040\",\r\n    \"typeDocument\":\"dni\",\r\n    \"typeCustomer\":\"personal\",\r\n    \"emailAddress\":\"sejue1@gmail.com\",\r\n    \"phoneNumber\":\"941451121\",\r\n    \"homeAddress\":\"jr.- La marisma 127\"\r\n}",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"firstname\": \"Jostin Samuel\",\r\n    \"lastname\": \"Martinez Alvarez\",\r\n    \"documentNumber\": \"60898432\",\r\n    \"typeDocument\": \"dni\",\r\n    \"typeCustomer\": \"personal\",\r\n    \"emailAddress\": \"jostinsamuel@gmail.com\",\r\n    \"phoneNumber\": \"941451121\",\r\n    \"homeAddress\": \"San Juan 123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -60,7 +60,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8087/customer",
+			"name": "findAll",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -78,7 +78,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8087/customer/3",
+			"name": "delete",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -97,7 +97,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8087/customer/3",
+			"name": "findById",
 			"request": {
 				"method": "GET",
 				"header": [],
