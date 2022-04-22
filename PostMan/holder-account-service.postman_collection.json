@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "1fe8cc78-c183-4ac8-a471-84f9bcad01d8",
+		"_postman_id": "9eddf268-97e9-4de2-a71b-28807eacb49b",
 		"name": "holder-account-service",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "localhost:8090/holder-account",
+			"name": "findAll",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -24,7 +24,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8090/holder-account/1",
+			"name": "findById",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -43,7 +43,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8090/holder-account/1",
+			"name": "delete",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -62,7 +62,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8090/holder-account",
+			"name": "insert",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -95,7 +95,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"idHolderAccount\":1,\r\n    \"idCustomer\":1,\r\n    \"idAccount\":1\r\n}",
+					"raw": "{\r\n    \"idCustomer\":2,\r\n    \"idAccount\":2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -117,7 +117,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8090/holder-account",
+			"name": "update",
 			"request": {
 				"method": "PUT",
 				"header": [],

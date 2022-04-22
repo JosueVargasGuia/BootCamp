@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "3cddceaa-fd8f-4718-80c5-82d9fd9a0acf",
+		"_postman_id": "a7ace6fd-c51b-4712-8ada-104d363a2380",
 		"name": "Credit",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "localhost:8084/credit",
+			"name": "findAll",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -24,7 +24,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8084/credit/idProductCredit",
+			"name": "findById",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -43,7 +43,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8084/credit/consultMovements/1",
+			"name": "consultMovements/1",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -63,7 +63,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8084/credit/idProductCredit",
+			"name": "delete",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -82,7 +82,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8084/credit/registerAccountCredit",
+			"name": "registerAccountCredit",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -110,7 +110,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8084/credit",
+			"name": "insert",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -137,7 +137,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8085/movementCredit/1-v",
+			"name": "delete",
 			"request": {
 				"method": "DELETE",
 				"header": [],

@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "84681ec3-e146-415c-bf63-b596c6cce50d",
+		"_postman_id": "bc1d7f19-ed37-4553-8ef2-fd002b2a1fdf",
 		"name": "SignCustAccount-service",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "localhost:8089/signCustAccount",
+			"name": "findAll",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -24,7 +24,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8089/signCustAccount/1",
+			"name": "findById",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -43,7 +43,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8089/signCustAccount/1",
+			"name": "delete",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -62,13 +62,13 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8089/signCustAccount/registerSignature",
+			"name": "registerSignature",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"idSignCustAccount\":4,\r\n    \"idCustomer\":2,\r\n    \"idAccount\":21\r\n}",
+					"raw": "{\r\n    \"idCustomer\":1,\r\n    \"idAccount\":1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -90,7 +90,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8089/signCustAccount",
+			"name": "insert",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -117,7 +117,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8089/signCustAccount",
+			"name": "update",
 			"request": {
 				"method": "PUT",
 				"header": [],

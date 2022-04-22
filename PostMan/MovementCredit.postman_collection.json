@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "70c7b755-0ca0-42e3-915d-9e2d0582bc4c",
+		"_postman_id": "e21aa967-cc41-49a5-bc8e-1197bf8607b4",
 		"name": "MovementCredit",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "localhost:8085/movementCredit",
+			"name": "findAll",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -25,7 +25,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8085/movementCredit/balanceInquiry",
+			"name": "balanceInquiry",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -53,7 +53,7 @@
 			"response": []
 		},
 		{
-			"name": "8085/movementCredit/recordsMovement",
+			"name": "recordsMovement",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -81,12 +81,13 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8085/movementCredit/1",
+			"name": "findById",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8085/movementCredit/1",
+					"raw": "http://localhost:8085/movementCredit/1",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -100,7 +101,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8085/movementCredit/1",
+			"name": "delete",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -119,7 +120,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8085/movementCredit",
+			"name": "insert",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -140,32 +141,6 @@
 					"port": "8085",
 					"path": [
 						"movementCredit"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "localhost:8085/movementCredit",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": " {\r\n        \"idMovementCredit\": 2,\r\n        \"amount\": 35.1,\r\n        \"dateMovement\": \"2022-04-15T21:58:53.968+00:00\",\r\n        \"typeMovementCredit\": \"abono\",\r\n        \"idCredit\": 1\r\n    }"
-				},
-				"url": {
-					"raw": "localhost:8085/movementCredit/1",
-					"host": [
-						"localhost"
-					],
-					"port": "8085",
-					"path": [
-						"movementCredit",
-						"1"
 					]
 				}
 			},
