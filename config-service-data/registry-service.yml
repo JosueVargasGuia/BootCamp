@@ -1,11 +1,10 @@
 server:
-  port: 8092 
-spring:
-  data:
-    mongodb:
-      database: bank
-      host: localhost
-      port: 27017
-api:
-  tableId-service:
-    uri: http://localhost:8091/tableid
+  port: 8092
+eureka:
+  instance:
+    hostname: localhost
+  client:   
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+      default-zone: http://${eureka.instance.hostname}:${server.port}/eureka
