@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Customer {
 	private Long id;
 	private String firstname;
@@ -19,13 +21,7 @@ public class Customer {
 	private String emailAddress;
 	private String phoneNumber;
 	private String homeAddress;
-	@Override
-	public String toString() {
-		return "Customer [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", documentNumber="
-				+ documentNumber + ", typeDocument=" + typeDocument + ", typeCustomer=" + typeCustomer
-				+ ", emailAddress=" + emailAddress + ", phoneNumber=" + phoneNumber + ", homeAddress=" + homeAddress
-				+ "]";
-	}
+ 
 	
 	
 }

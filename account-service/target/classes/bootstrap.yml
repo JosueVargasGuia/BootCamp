@@ -3,5 +3,8 @@ spring:
     name: account-service
   cloud:
     config:
-      enabled: 'true'
+      enabled: true
       uri: http://localhost:8081
+
+
+      
