@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "c3d241fb-d59f-438b-8a52-f4941b602c67",
+		"_postman_id": "124db160-9c0d-44d0-b9f6-a61e8d821116",
 		"name": "Account",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "localhost:8086/account",
+			"name": "findById",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -25,7 +25,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8086/account/1",
+			"name": "delete",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -44,7 +44,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8086/account",
+			"name": "findAll",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -62,13 +62,13 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8086/account",
+			"name": "insert",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"idAccount\":10,\r\n    \"idProduct\":2,\r\n    \"idCustomer\":1,\r\n    \"amount\":10\r\n}",
+					"raw": "{\r\n    \"idAccount\":10,\r\n    \"idProduct\":2,\r\n    \"idCustomer\":1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -89,13 +89,13 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8086/account/registerAccount",
+			"name": "registerAccount",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"idAccount\":1,\r\n    \"idProduct\":2,\r\n    \"idCustomer\":1,\r\n    \"amount\":20\r\n}",
+					"raw": "{\r\n    \"idProduct\":3,\r\n    \"idCustomer\":2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -117,7 +117,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8086/account/consultMovementsAccount",
+			"name": "consultMovementsAccount",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -126,7 +126,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"idAccount\":1,\r\n    \"idProduct\":1,\r\n    \"idCustomer\":1,\r\n    \"amount\":20\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -149,7 +149,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8086/account",
+			"name": "update",
 			"request": {
 				"method": "PUT",
 				"header": [],

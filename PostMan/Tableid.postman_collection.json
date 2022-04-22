@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "86610112-d3ad-499f-ad9d-e078fbbd051a",
+		"_postman_id": "df8040ef-52dd-4a83-ad19-1e672a774a47",
 		"name": "Tableid",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "localhost:8091/tableid",
+			"name": "findAll",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -24,7 +24,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8091/tableid/tableName",
+			"name": "start id",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -45,27 +45,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8091/tableid/generateKey",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8091/tableid/generateKey/Product",
-					"host": [
-						"localhost"
-					],
-					"port": "8091",
-					"path": [
-						"tableid",
-						"generateKey",
-						"Product"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "localhost:8091/tableid/Product",
+			"name": "delete",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -84,7 +64,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8091/tableid",
+			"name": "insert",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -111,7 +91,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8091/tableid",
+			"name": "update",
 			"request": {
 				"method": "PUT",
 				"header": [],
