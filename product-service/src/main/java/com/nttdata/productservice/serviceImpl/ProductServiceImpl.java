@@ -41,8 +41,9 @@ RestTemplate restTemplate;
 
 	@Override
 	public Mono<Product> findById(Long idProducto) {
-		return productRepository.findById(idProducto);
-				//.switchIfEmpty(Mono.just(new Product(null, null, null, null)));
+		return productRepository.findById(idProducto) 
+				 .switchIfEmpty(Mono.just(new Product(Long.valueOf(-1), null, "", null, Long.valueOf(-1)))) ;
+				 
 	}
 
 	@Override
