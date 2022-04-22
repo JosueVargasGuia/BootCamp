@@ -3,13 +3,8 @@ spring:
     name: account-service
   cloud:
     config:
-      enabled: 'true'
+      enabled: true
       uri: http://localhost:8081
-server:
-  port: ${PORT:${SERVER_PORT:0}}
-eureka:
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance-id:${random.value}}        
 
 
       
