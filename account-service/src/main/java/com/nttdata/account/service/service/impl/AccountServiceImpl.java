@@ -40,10 +40,10 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	private AccountRepository repository;
 
-	@Autowired
-	CustomerFeignClient customerFeignClient;
-	@Autowired
-	ProductFeignClient productFeignClient;
+	 @Autowired
+	 CustomerFeignClient customerFeignClient;
+	 @Autowired
+	 ProductFeignClient productFeignClient;
 
 	@Autowired
 	RestTemplate restTemplate;
