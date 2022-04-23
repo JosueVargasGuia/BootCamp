@@ -1,5 +1,5 @@
 server:
-  port: 8085
+  port: 8082
 spring:
   data:
     mongodb:
@@ -7,7 +7,5 @@ spring:
       host: localhost
       port: 27017
 api:
-  credit-service:
-    uri: http://localhost:8084/credit
   tableId-service:
     uri: http://localhost:8091/tableid

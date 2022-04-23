@@ -39,8 +39,7 @@ public class MovementCreditController {
 	@PostMapping
 	public Mono<ResponseEntity<MovementCredit>> save(@RequestBody MovementCredit movementCredit) {
 		return movementCreditService.save(movementCredit)
-				.map(_movementCredit -> ResponseEntity.ok().body(_movementCredit))
-				.onErrorResume(e -> {
+				.map(_movementCredit -> ResponseEntity.ok().body(_movementCredit)).onErrorResume(e -> {
 					log.info("Error:" + e.getMessage());
 					return Mono.just(ResponseEntity.badRequest().build());
 				});
