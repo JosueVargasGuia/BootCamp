@@ -1,6 +1,3 @@
-spring:
-  application:
-    name: api-gateway-service
 #  cloud:
 #    config:
 #      enabled: true
@@ -14,4 +11,19 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
   instance:
-    hostname: localhost1
+    hostname: localhost
+spring:
+  application:
+    name: api-gateway-service  
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: account-service 
+          uri: lb://account-service
+          predicates:
+            - Path=/account/**           
+
+    

@@ -62,7 +62,8 @@ public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustom
 	@Override
 	public Mono<SignatoriesCustomerAccounts> findById(Long idSignatoriesCustomerAccounts) {
 		// TODO Auto-generated method stub
-		return accountsRepository.findById(idSignatoriesCustomerAccounts);
+		return accountsRepository.findById(idSignatoriesCustomerAccounts)
+				.switchIfEmpty(Mono.just(new SignatoriesCustomerAccounts(Long.valueOf(-1), Long.valueOf(-1), Long.valueOf(-1))));
 	}
 
 	@Override

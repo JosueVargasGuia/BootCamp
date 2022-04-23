@@ -1,0 +1,17 @@
+server:
+  port: 8085
+spring:
+  data:
+    mongodb:
+      database: bank
+      host: localhost
+      port: 27017
+api:
+  credit-service:
+    uri: http://localhost:8084/credit
+  tableId-service:
+    uri: http://localhost:8091/tableid
+api:
+  uri:
+    credit-service: http://credit-service/credit
+    tableId-service: http://TableId-service/tableid

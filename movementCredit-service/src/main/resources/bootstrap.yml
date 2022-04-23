@@ -5,3 +5,7 @@ spring:
     config:
       uri: http://localhost:8081
       enabled: true
+api:
+  uri:
+    credit-service: http://credit-service/credit
+    tableId-service: http://TableId-service/tableid

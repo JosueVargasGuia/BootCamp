@@ -38,6 +38,7 @@ public class AccountController {
 	
 	@GetMapping
 	public Flux<Account> findAll(){
+	 log.info(eurekaClient.getApplicationInfoManager().getInfo().getInstanceId());
 		return service.findAll();
 
 	}
