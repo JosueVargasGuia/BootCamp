@@ -33,8 +33,8 @@ public class ProductServiceImpl implements ProductService {
 	ProductRepository productRepository;
 	@Autowired
 	RestTemplate restTemplate;
-	// @Value("${api.tableId-service.uri}")
-	// String tableIdService;
+	  @Value("${api.tableId-service.uri}")
+	 String tableIdService;
 	
 	@Autowired
 	TableIdFeignClient tableIdFeignClient;
@@ -116,16 +116,16 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Long generateKey(String nameTable) {
-		// log.info(tableIdService + "/generateKey/" + nameTable);
-		/*
-		 * ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService +
-		 * "/generateKey/" + nameTable, HttpMethod.GET, null, new
-		 * ParameterizedTypeReference<Long>() { }); if (responseGet.getStatusCode() ==
-		 * HttpStatus.OK) { log.info("Body:" + responseGet.getBody()); return
-		 * responseGet.getBody(); } else { return Long.valueOf(0); }
-		 */
-TableId tableId=tableIdFeignClient.generateKey(nameTable);
-	log.info("tableId:"+tableId.toString());
-		return tableId.getSecuencia() ;
+		 log.info(tableIdService + "/generateKey/" + nameTable);
+		 TableId tableId=tableIdFeignClient.testgenerateKey(nameTable);
+			log.info("tableId:"+tableId.toString());
+			 
+		  ResponseEntity<TableId> responseGet = restTemplate.exchange(tableIdService +
+		  "/generateKey/" + nameTable, HttpMethod.GET, null, new
+		  ParameterizedTypeReference<TableId>() { }); if (responseGet.getStatusCode() ==
+		  HttpStatus.OK) { log.info("Body:" + responseGet.getBody()); return
+		  responseGet.getBody().getSecuencia(); } else { return Long.valueOf(0); }
+		 
+
 	}
 }

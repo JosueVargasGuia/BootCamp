@@ -1,8 +1,15 @@
 package com.nttdata.productservice.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TableId {
 	private String nameTable;
 	private Long secuencia;
