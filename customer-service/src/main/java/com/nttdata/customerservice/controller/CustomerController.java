@@ -1,7 +1,5 @@
 package com.nttdata.customerservice.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nttdata.customerservice.entity.Customer;
 import com.nttdata.customerservice.service.CustomerService;
 
+import lombok.extern.log4j.Log4j2;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Log4j2
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
-	
-	Logger logger = LoggerFactory.getLogger(CustomerController.class);
 	
 	@Autowired
 	private CustomerService service;
@@ -38,7 +36,7 @@ public class CustomerController {
 	public Mono<ResponseEntity<Customer>> findById(@PathVariable("id") Long id){
 		return service.findById(id).map(_customer -> ResponseEntity.ok().body(_customer))
 				.onErrorResume(e -> {
-					logger.info("Error:" + e.getMessage());
+					log.info("Error:" + e.getMessage());
 					return Mono.just(ResponseEntity.badRequest().build());
 				}).defaultIfEmpty(ResponseEntity.noContent().build());
 	}
@@ -46,7 +44,7 @@ public class CustomerController {
 	@PostMapping
 	public Mono<ResponseEntity<Customer>> saveCustomer(@RequestBody Customer customer){
 		return service.save(customer).map(_customer -> ResponseEntity.ok().body(_customer)).onErrorResume(e -> {
-			logger.info("Error:" + e.getMessage());
+			log.info("Error:" + e.getMessage());
 			return Mono.just(ResponseEntity.badRequest().build());
 		});
 	}
@@ -54,15 +52,15 @@ public class CustomerController {
 	@PutMapping
 	public Mono<ResponseEntity<Customer>> updateCustomer(@RequestBody Customer customer){
 		Mono<Customer> objCustomer = service.findById(customer.getId()).flatMap(_customer -> {
-			logger.info("Update: [new] " + customer + " [Old]: " + _customer);
+			log.info("Update: [new] " + customer + " [Old]: " + _customer);
 			return service.update(customer);
 		});
 
 		return objCustomer.map(_cust -> {
-			logger.info("Status: " + HttpStatus.OK);
+			log.info("Status: " + HttpStatus.OK);
 			return ResponseEntity.ok().body(_cust);
 		}).onErrorResume(e -> {
-			logger.info("Status: " + HttpStatus.BAD_REQUEST + " Message:  " + e.getMessage());
+			log.info("Status: " + HttpStatus.BAD_REQUEST + " Message:  " + e.getMessage());
 			return Mono.just(ResponseEntity.badRequest().build());
 		}).defaultIfEmpty(ResponseEntity.noContent().build());
 	}

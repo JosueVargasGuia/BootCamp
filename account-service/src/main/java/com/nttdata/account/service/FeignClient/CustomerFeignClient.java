@@ -10,6 +10,7 @@ import com.nttdata.account.service.model.Customer;
 @FeignClient(name="customerFeignClient",url="${api.customer-service.uri}",
 fallback = CustomerFeignClientFallBack.class)
 public interface CustomerFeignClient {
+
 	@GetMapping("/{id}")
 	Customer customerfindById(@PathVariable(name = "id")Long id);
 	
