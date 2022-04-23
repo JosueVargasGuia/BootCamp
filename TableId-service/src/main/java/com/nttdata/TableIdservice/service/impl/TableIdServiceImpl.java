@@ -28,7 +28,7 @@ public class TableIdServiceImpl implements TableIdService {
 	@Override
 	public Mono<TableId> findById(String nameTable) {
 		// TODO Auto-generated method stub
-		return tableIdRepository.findById(nameTable);
+		return tableIdRepository.findById(nameTable).switchIfEmpty(Mono.just(new TableId("",Long.valueOf(-1))));
 	}
 
 	@Override
