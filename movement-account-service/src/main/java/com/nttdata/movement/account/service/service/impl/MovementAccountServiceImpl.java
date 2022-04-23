@@ -16,19 +16,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.nttdata.movement.account.service.FeignClient.AccountFeignClient;
 import com.nttdata.movement.account.service.entity.MovementAccount;
 import com.nttdata.movement.account.service.entity.TypeMovementAccount;
 import com.nttdata.movement.account.service.model.Account;
 import com.nttdata.movement.account.service.repository.MovementAccountRepository;
 import com.nttdata.movement.account.service.service.MovementAccountService;
 
+import lombok.extern.log4j.Log4j2;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Log4j2
 @Service
 public class MovementAccountServiceImpl implements MovementAccountService {
-
-	Logger logger = LoggerFactory.getLogger(MovementAccountServiceImpl.class);
 
 	@Autowired
 	private MovementAccountRepository repository;
@@ -36,10 +37,16 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 	@Autowired
 	RestTemplate restTemplate;
 
+	 @Autowired
+	 AccountFeignClient accountFeignClient;
+
 	@Value("${api.account-service.uri}")
-	private String accountService; //= "http://localhost:8086/account";
+	private String accountService;
+	
 	@Value("${api.tableId-service.uri}")
 	String tableIdService;
+	
+	
 	@Override
 	public Flux<MovementAccount> findAll() {
 		return repository.findAll();
@@ -81,7 +88,7 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 				return this.findAll()
 						.filter(c -> (c.getIdAccount() == movementAccount.getIdAccount()))
 						.map(mov -> {
-							logger.info("Amount:"+mov.getAmount());
+							log.info("Amount:"+mov.getAmount());
 							if (mov.getTypeMovementAccount() == TypeMovementAccount.withdrawal) {
 								mov.setAmount(-1*mov.getAmount());
 							}
@@ -90,12 +97,12 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 						.collect(Collectors.summingDouble(MovementAccount::getAmount)).map(_saldo -> {							
 							if ( movementAccount.getAmount() <= (_saldo /*+account.getAmount()*/)) { 
 								movementAccount.setDateMovementAccount(Calendar.getInstance().getTime());
-								this.save(movementAccount).subscribe(e->logger.info("Movimiento de retiro registrado: "+e.toString()));
+								this.save(movementAccount).subscribe(e->log.info("Movimiento de retiro registrado: "+e.toString()));
 								hashMap.put("Account success: ", "Registro de movimiento de retiro. Valor retirado: "+ movementAccount.getAmount());
-								logger.info("Saldo disponible: " + (_saldo-movementAccount.getAmount())); 
+								log.info("Saldo disponible: " + (_saldo-movementAccount.getAmount())); 
 							} else {
 								hashMap.put("Message Account", "No cuenta con saldo suficiente para retiro. Saldo disponible: "+(_saldo /*+account.getAmount()*/));
-								logger.info("No cuenta con saldo suficiente para retiro."+" Saldo disponible: " +( _saldo /*+account.getAmount() */));
+								log.info("No cuenta con saldo suficiente para retiro."+" Saldo disponible: " +( _saldo /*+account.getAmount() */));
 							}
 							return hashMap;
 						});
@@ -103,8 +110,8 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 				movementAccount.setDateMovementAccount(Calendar.getInstance().getTime());
 				return this.save(movementAccount).map(_value -> {
 					hashMap.put("Account success: ", "Registro de movimiento de depósito. Valor depositado: "+_value.getAmount());
-					logger.info("Registro de movimiento de depósito.  Valor depositado: "+_value.getAmount()); 
-					//logger.info("Saldo disponible: " + (_value.getAmount())); 
+					log.info("Registro de movimiento de depósito.  Valor depositado: "+_value.getAmount()); 
+					//log.info("Saldo disponible: " + (_value.getAmount())); 
 					return hashMap;
 				});
 
@@ -119,14 +126,9 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 	@Override
 	public Account findByIdAccount(Long idAccount) {
 		// buscar la cuenta donde se realizan los movimientos
-		logger.info(accountService + "/" + idAccount);
-		ResponseEntity<Account> response = restTemplate.exchange(accountService + "/" + idAccount, HttpMethod.GET, null,
-				new ParameterizedTypeReference<Account>() {});
-		if (response.getStatusCode() == HttpStatus.OK) {
-			return response.getBody();
-		} else {
-			return null;
-		}
+		Account account = accountFeignClient.accountFindById(idAccount);
+		log.info("Account -> " + account);
+		return account;
 	}
 
 	@Override
@@ -141,12 +143,12 @@ public class MovementAccountServiceImpl implements MovementAccountService {
 			}
 			return mov;
 		}).collect(Collectors.summingDouble(MovementAccount::getAmount)).map(_value -> {
-			logger.info("Consulta de saldo: "+_value);
+			log.info("Consulta de saldo: "+_value);
 			return _value;
 		}).map(value->{
 			hashMap.put("Status Consulta de saldo:","El saldo de la cuenta es de:" + value);
 			//hashMap.put("creditBalance", value);
-			logger.info("Account", account);
+			log.info("Account", account);
 		return hashMap;
 		}
 				);	

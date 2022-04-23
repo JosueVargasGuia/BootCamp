@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Product {
 	
 	private Long idProducto;
@@ -17,9 +19,5 @@ public class Product {
 	private TypeProduct typeProduct;
 	private Long idConfiguration;
 	
-	@Override
-	public String toString() {
-		return "Product [idProducto=" + idProducto + ", productId=" + productId + ", descriptionProducto="
-				+ descriptionProducto + ", typeProduct=" + typeProduct + ", idConfiguration=" + idConfiguration + "]";
-	}
+ 
 }

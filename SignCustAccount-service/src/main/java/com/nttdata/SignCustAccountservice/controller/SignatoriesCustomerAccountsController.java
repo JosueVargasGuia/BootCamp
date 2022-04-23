@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nttdata.SignCustAccountservice.entity.SignatoriesCustomerAccounts;
 import com.nttdata.SignCustAccountservice.service.SignatoriesCustomerAccountsService;
 
+import lombok.extern.log4j.Log4j2;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Log4j2
 @RestController
 @RequestMapping("/signCustAccount")
 public class SignatoriesCustomerAccountsController {
-	Logger log = LoggerFactory.getLogger(SignatoriesCustomerAccountsController.class);
+	
 	@Autowired
 	SignatoriesCustomerAccountsService accountsService;
 
