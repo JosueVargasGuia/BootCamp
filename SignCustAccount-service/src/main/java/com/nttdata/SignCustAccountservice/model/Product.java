@@ -1,7 +1,5 @@
 package com.nttdata.SignCustAccountservice.model;
 
-import org.springframework.data.annotation.Id;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-	@Id
+
 	private Long idProducto;
 	private ProductId productId;
 	private String descriptionProducto;

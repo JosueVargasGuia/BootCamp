@@ -2,11 +2,8 @@ package com.nttdata.SignCustAccountservice.serviceImpl;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -33,7 +30,6 @@ import reactor.core.publisher.Mono;
 @Log4j2
 @Service
 public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustomerAccountsService {
-	//Logger log = LoggerFactory.getLogger(SignatoriesCustomerAccountsServiceImpl.class);
 
 	@Value("${api.account-service.uri}")
 	private String accountService;
@@ -43,6 +39,7 @@ public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustom
 
 	@Value("${api.customer-service.uri}")
 	private String customerService;
+	
 	@Value("${api.tableId-service.uri}")
 	String tableIdService;
 
@@ -62,8 +59,7 @@ public class SignatoriesCustomerAccountsServiceImpl implements SignatoriesCustom
 	@Override
 	public Mono<SignatoriesCustomerAccounts> findById(Long idSignatoriesCustomerAccounts) {
 		// TODO Auto-generated method stub
-		return accountsRepository.findById(idSignatoriesCustomerAccounts)
-				.switchIfEmpty(Mono.just(new SignatoriesCustomerAccounts(Long.valueOf(-1), Long.valueOf(-1), Long.valueOf(-1))));
+		return accountsRepository.findById(idSignatoriesCustomerAccounts);
 	}
 
 	@Override

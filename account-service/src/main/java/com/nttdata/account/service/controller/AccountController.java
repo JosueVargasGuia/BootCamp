@@ -2,10 +2,7 @@ package com.nttdata.account.service.controller;
 
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
- 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,21 +21,20 @@ import com.nttdata.account.service.model.MovementAccount;
 import com.nttdata.account.service.model.Product;
 import com.nttdata.account.service.service.AccountService;
 
+import lombok.extern.log4j.Log4j2;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Log4j2
 @RestController
 @RequestMapping("/account")
 public class AccountController {
-	
-	Logger log = LoggerFactory.getLogger(AccountController.class);
 	
 	@Autowired
 	private AccountService service;
 	
 	@GetMapping
 	public Flux<Account> findAll(){
-	 log.info(eurekaClient.getApplicationInfoManager().getInfo().getInstanceId());
 		return service.findAll();
 
 	}
