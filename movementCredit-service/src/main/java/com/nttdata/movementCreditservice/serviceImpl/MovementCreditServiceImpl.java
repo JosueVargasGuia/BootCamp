@@ -179,7 +179,7 @@ public class MovementCreditServiceImpl implements MovementCreditService {
 		 * HttpStatus.OK) { log.info("Body:" + responseGet.getBody()); return
 		 * responseGet.getBody(); } else { return Long.valueOf(0); }
 		 */
-		return tableIdFeignClient.generateKey(nameTable);
+		return tableIdFeignClient.generateKey(nameTable).getSecuencia();
 	}
 	/*
 	 * @Override public List<MovementCredit> findAllList() {

@@ -19,6 +19,7 @@ import com.nttdata.productservice.FeignClient.TableIdFeignClient;
 import com.nttdata.productservice.entity.Product;
 import com.nttdata.productservice.entity.ProductId;
 import com.nttdata.productservice.entity.TypeProduct;
+import com.nttdata.productservice.model.TableId;
 import com.nttdata.productservice.repository.ProductRepository;
 import com.nttdata.productservice.service.ProductService;
 
@@ -34,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
 	RestTemplate restTemplate;
 	// @Value("${api.tableId-service.uri}")
 	// String tableIdService;
+	
 	@Autowired
 	TableIdFeignClient tableIdFeignClient;
 
@@ -122,7 +124,8 @@ public class ProductServiceImpl implements ProductService {
 		 * HttpStatus.OK) { log.info("Body:" + responseGet.getBody()); return
 		 * responseGet.getBody(); } else { return Long.valueOf(0); }
 		 */
-
-		return tableIdFeignClient.generateKey(nameTable) ;
+TableId tableId=tableIdFeignClient.generateKey(nameTable);
+	log.info("tableId:"+tableId.toString());
+		return tableId.getSecuencia() ;
 	}
 }

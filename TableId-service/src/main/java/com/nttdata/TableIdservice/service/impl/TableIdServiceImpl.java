@@ -50,7 +50,7 @@ public class TableIdServiceImpl implements TableIdService {
 	}
 
 	@Override
-	public Mono<Long> generateKey(String nameTable) {
+	public Mono<TableId> generateKey(String nameTable) {
 		TableId tableId = (TableId) tableIdRepository.findById(nameTable).toFuture().join();
 		
 		if (tableId != null) {
@@ -58,14 +58,14 @@ public class TableIdServiceImpl implements TableIdService {
 			tableId.setSecuencia(Long.valueOf(tableId.getSecuencia()+1));			
 			return this.update(tableId).map(_obj -> {
 				log.info("save[generateKey]:" + _obj.toString());
-				return _obj.getSecuencia();
+				return _obj;
 			});
 			//return Mono.just(tableId.getSecuencia());
 		} else {
 			tableId = new TableId(nameTable, Long.valueOf(1));			
 			return this.save(tableId).map(_obj -> {
 				log.info("update[generateKey]:" + _obj.toString());
-				return _obj.getSecuencia();
+				return _obj;
 			});
 			//return Mono.just(tableId.getSecuencia());
 		}
