@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.netflix.discovery.EurekaClient;
+//import com.netflix.discovery.EurekaClient;
 import com.nttdata.account.service.entity.Account;
 import com.nttdata.account.service.model.Customer;
 import com.nttdata.account.service.model.MovementAccount;
@@ -80,14 +80,14 @@ public class AccountController {
 		});
 	}
  
-	@Autowired 
-	EurekaClient eurekaClient;
+	//@Autowired 
+	//EurekaClient eurekaClient;
 	
 	@PostMapping("/registerAccount")
 	public Mono<ResponseEntity<Map<String, Object>>> registerAccount(@RequestBody Account account) {
 		return service.registerAccount(account).
 				map(_object ->{ 
-					_object.put("IntanceName", eurekaClient.getApplicationInfoManager().getInfo().getInstanceId());
+					//_object.put("IntanceName", eurekaClient.getApplicationInfoManager().getInfo().getInstanceId());
 				return ResponseEntity.ok().body(_object);})
 				.onErrorResume(e -> {
 					log.error("Error:" + e.getMessage());
