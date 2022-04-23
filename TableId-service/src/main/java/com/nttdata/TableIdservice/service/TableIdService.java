@@ -18,5 +18,5 @@ public interface TableIdService {
 
 	Mono<Void> delete(String name);
 
-	Mono<Long> generateKey(String nameTable);
+	Mono<TableId> generateKey(String nameTable);
 }
