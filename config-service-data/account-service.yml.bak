@@ -15,8 +15,8 @@ spring:
       database: bank
       port: '27017'
       host: localhost
-server:
-  port: ${PORT:${SERVER_PORT:0}}      
+#server:
+#  port: ${PORT:${SERVER_PORT:0}}      
 feign:
   circuitbreaker:
     enabled: true
